@@ -9,7 +9,7 @@ console.info(`%c${CARD_NAME}: ${version}`, 'font-weight: bold')
 ;(window as any).customCards = (window as any).customCards || []
 ;(window as any).customCards.push({
   type: CARD_NAME,
-  name: 'Simple Thermostat',
+  name: 'Simple Thermostat Refresh',
   preview: false,
   description: 'A different take on the thermostat card',
 })

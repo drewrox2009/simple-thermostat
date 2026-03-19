@@ -1,6 +1,8 @@
-# Lovelace simple thermostat card
+# Lovelace simple thermostat refresh card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
+
+> **Note:** This is a revival of the original `simple-thermostat` card, generated because the original developer went silent. The goal of this fork is to fix errors in Home Assistant and provide a modernized aesthetic so it can run alongside the original. There are no major feature additions planned.
 
 A different take on the thermostat card for Home Assistant Lovelace UI.
 The aim is to provide a card with simpler interactions that are easier to use and take up less space, as well as provide more modularity to tweak the card. For example the abiltity to embed sensor values that are relevant to your thermostat (like humidity, energy usage, hours on +++).
@@ -16,7 +18,7 @@ The aim is to provide a card with simpler interactions that are easier to use an
 Hide everything but sensors and temperature control:
 
 ```yaml
-type: custom:simple-thermostat
+type: custom:simple-thermostat-refresh
 entity: climate.hvac
 layout:
   step: row
@@ -39,19 +41,19 @@ Home Assistant 0.84 or higher
 1. Install via [HACS](https://hacs.xyz/).
 2. Add to resources:
    ```yaml
-   url: /hacsfiles/simple-thermostat/simple-thermostat.js
+   url: /hacsfiles/simple-thermostat-refresh/simple-thermostat-refresh.js
    type: module
    ```
 
 <details>
    <summary>Manual install</summary>
-1. Download the `simple-thermostat.js` from the [latest release](https://github.com/nervetattoo/simple-thermostat/releases/latest) and store it in your `configuration/www` folder.
+1. Download the `simple-thermostat-refresh.js` from the [latest release](https://github.com/nervetattoo/simple-thermostat/releases/latest) and store it in your `configuration/www` folder.
    _Previously you could download the source file from Github but starting from the 0.14 release that is no longer possible. If you try to do so it will crash_
 2. Configure Lovelace to load the card:
 
 ```yaml
 resources:
-  - url: /local/simple-thermostat.js?v=1
+  - url: /local/simple-thermostat-refresh.js?v=1
     type: module
 ```
 
@@ -226,7 +228,7 @@ control:
 
 ```yaml
 cards:
-  - type: 'custom:simple-thermostat'
+  - type: 'custom:simple-thermostat-refresh'
     entity: climate.my_room
     step_size: 1
     sensors:
@@ -256,7 +258,7 @@ cards:
 
 ```yaml
 cards:
-  - type: 'custom:simple-thermostat'
+  - type: 'custom:simple-thermostat-refresh'
     entity: climate.my_room
     step_size: 1
     sensors:
@@ -307,7 +309,7 @@ example-theme:
 Same example as above, but will only apply to a single card.
 
 ```yaml
-type: 'custom:simple-thermostat'
+type: 'custom:simple-thermostat-refresh'
 style: |
   ha-card {
     --st-font-size-xl: 24px;

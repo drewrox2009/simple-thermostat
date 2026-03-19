@@ -43,7 +43,7 @@ export default [
   {
     input: 'src/simple-thermostat.ts',
     output: {
-      file: 'dist/simple-thermostat.js',
+      file: 'dist/simple-thermostat-refresh.js',
       format: 'es',
       name: 'SimpleThermostat',
     },
@@ -65,7 +65,7 @@ export default [
   {
     input: 'src/simple-thermostat.ts',
     output: {
-      file: 'dist/simple-thermostat.debug.js',
+      file: 'dist/simple-thermostat-refresh.debug.js',
       format: 'es',
       name: 'SimpleThermostat',
     },
