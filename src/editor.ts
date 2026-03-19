@@ -23,6 +23,10 @@ const OptionsStepSize = [0.5, 1]
 
 const OptionsStepLayout = ['column', 'row']
 
+const OptionsThemes = ['standard', 'modern']
+
+const OptionsControlStyles = ['classic', 'dial']
+
 const includeDomains = ['climate']
 
 const GithubReadMe =
@@ -30,6 +34,7 @@ const GithubReadMe =
 
 const stub = {
   header: {},
+  control: {},
   layout: {
     mode: {},
   },
@@ -106,6 +111,58 @@ export default class SimpleThermostatEditor extends LitElement {
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
+          <ha-formfield label="Show HVAC modes?">
+            <ha-switch
+              .checked=${(this.config?.control as any)?.hvac !== false}
+              .configValue="${'control.hvac'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show preset modes?">
+            <ha-switch
+              .checked=${(this.config?.control as any)?.preset !== false}
+              .configValue="${'control.preset'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+
+          <div class="side-by-side">
+            <paper-dropdown-menu
+              label="Theme (optional)"
+              .configValue=${'theme'}
+              @value-changed="${this.valueChanged}"
+              class="dropdown"
+            >
+              <paper-listbox
+                slot="dropdown-content"
+                .selected=${this.config.theme
+                  ? OptionsThemes.indexOf(this.config.theme)
+                  : 1}
+              >
+                ${OptionsThemes.map(
+                  (item) => html` <paper-item>${item}</paper-item> `
+                )}
+              </paper-listbox>
+            </paper-dropdown-menu>
+
+            <paper-dropdown-menu
+              label="Control Style (optional)"
+              .configValue=${'control_style'}
+              @value-changed="${this.valueChanged}"
+              class="dropdown"
+            >
+              <paper-listbox
+                slot="dropdown-content"
+                .selected=${this.config.control_style
+                  ? OptionsControlStyles.indexOf(this.config.control_style)
+                  : 0}
+              >
+                ${OptionsControlStyles.map(
+                  (item) => html` <paper-item>${item}</paper-item> `
+                )}
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
 
           ${this.config.header !== false
             ? html`

@@ -2962,6 +2962,211 @@ var css_248z = css`
     flex: 1;
     padding-right: 4px;
   }
+
+  /* 
+ * ==============================================================
+ * ULTRA MODERN THEME (Glassmorphism + Glowing Interactions)
+ * ==============================================================
+ */
+
+  ha-card.modern {
+    background: rgba(20, 20, 20, 0.4);
+    background: var(--st-modern-bg, rgba(20, 20, 20, 0.4));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    padding: 24px;
+  }
+
+  ha-card.modern .header__title,
+  ha-card.modern .header__icon {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+  }
+
+  ha-card.modern .body {
+    padding: 16px 0;
+  }
+
+  ha-card.modern .sensors {
+    display: flex;
+    justify-content: center;
+    grid-gap: 12px;
+    gap: 12px;
+    margin-top: 16px;
+    grid-template-columns: unset;
+  }
+
+  ha-card.modern .sensor-heading,
+  ha-card.modern .sensor-value {
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
+  ha-card.modern .sensor-value {
+    color: #ffffff;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  ha-card.modern .sensor-item {
+    /* Assuming we wrap infoItems in this if needed, else we target their layout */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 8px 16px;
+    text-align: center;
+  }
+
+  /* Mode Buttons / Bottom Bar */
+  ha-card.modern .modes {
+    display: flex;
+    justify-content: space-around;
+    grid-gap: 8px;
+    gap: 8px;
+    background: transparent;
+    padding: 0;
+  }
+
+  ha-card.modern .mode-item {
+    flex: 1;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 12px 0;
+    font-weight: 500;
+    box-shadow: none;
+    min-height: auto;
+    grid-gap: 8px;
+    gap: 8px;
+  }
+
+  ha-card.modern .mode-item .mode-icon {
+    --iron-icon-width: 20px;
+    --iron-icon-height: 20px;
+  }
+
+  ha-card.modern .mode-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  ha-card.modern .mode-item.active {
+    background: rgba(43, 154, 249, 0.2);
+    border: 1px solid rgba(43, 154, 249, 0.5);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(43, 154, 249, 0.4),
+      inset 0 0 10px rgba(43, 154, 249, 0.2);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  }
+  ha-card.modern .mode-item.active.heat {
+    background: rgba(255, 129, 0, 0.2);
+    border: 1px solid rgba(255, 129, 0, 0.5);
+    box-shadow: 0 0 20px rgba(255, 129, 0, 0.4),
+      inset 0 0 10px rgba(255, 129, 0, 0.2);
+  }
+
+  /* 
+ * Control Styles within Modern Theme
+ */
+  ha-card.modern .current-wrapper {
+    margin: 32px 0;
+  }
+
+  ha-card.modern .current--value {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  ha-card.modern .thermostat-trigger {
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 8px;
+  }
+
+  ha-card.modern .thermostat-trigger:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Style: Classic Numbers with Arrows Stacked */
+  ha-card.modern.style-classic .current-wrapper {
+    flex-direction: column;
+  }
+
+  ha-card.modern.style-classic .current--value {
+    font-size: 56px;
+    line-height: 1;
+    margin: 16px 0;
+  }
+
+  /* Style: Dial Arc Layout */
+  ha-card.modern.style-dial .current-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 8px solid rgba(255, 255, 255, 0.05);
+    border-top-color: rgba(43, 154, 249, 0.8); /* Simulated glowing arc */
+    border-right-color: rgba(43, 154, 249, 0.4);
+    box-shadow: 0 0 30px rgba(43, 154, 249, 0.2),
+      inset 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 24px auto;
+  }
+
+  ha-card.modern.style-dial .current--value {
+    font-size: 48px;
+    margin: 0;
+    z-index: 2;
+  }
+
+  ha-card.modern.style-dial .thermostat-trigger {
+    position: absolute;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    height: 50%;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  ha-card.modern.style-dial .thermostat-trigger:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-up'] {
+    top: 0;
+    align-items: flex-start;
+    padding-top: 16px;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+  }
+
+  ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
+    bottom: 0;
+    align-items: flex-end;
+    padding-bottom: 16px;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+  }
 `
 styleInject(css_248z)
 
@@ -2991,11 +3196,14 @@ function setValue(obj, path, value) {
 const OptionsDecimals = [0, 1]
 const OptionsStepSize = [0.5, 1]
 const OptionsStepLayout = ['column', 'row']
+const OptionsThemes = ['standard', 'modern']
+const OptionsControlStyles = ['classic', 'dial']
 const includeDomains = ['climate']
 const GithubReadMe =
   'https://github.com/nervetattoo/simple-thermostat/blob/master/README.md'
 const stub = {
   header: {},
+  control: {},
   layout: {
     mode: {},
   },
@@ -3018,7 +3226,28 @@ class SimpleThermostatEditor extends LitElement {
     window.open(GithubReadMe)
   }
   render() {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t
+    var _a,
+      _b,
+      _c,
+      _d,
+      _e,
+      _f,
+      _g,
+      _h,
+      _j,
+      _k,
+      _l,
+      _m,
+      _o,
+      _p,
+      _q,
+      _r,
+      _s,
+      _t,
+      _u,
+      _v,
+      _w,
+      _x
     if (!this.hass) return html``
     return html`
       <div class="card-config">
@@ -3086,26 +3315,88 @@ class SimpleThermostatEditor extends LitElement {
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
+          <ha-formfield label="Show HVAC modes?">
+            <ha-switch
+              .checked=${((_l =
+                (_k = this.config) === null || _k === void 0
+                  ? void 0
+                  : _k.control) === null || _l === void 0
+                ? void 0
+                : _l.hvac) !== false}
+              .configValue="${'control.hvac'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show preset modes?">
+            <ha-switch
+              .checked=${((_o =
+                (_m = this.config) === null || _m === void 0
+                  ? void 0
+                  : _m.control) === null || _o === void 0
+                ? void 0
+                : _o.preset) !== false}
+              .configValue="${'control.preset'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+
+          <div class="side-by-side">
+            <paper-dropdown-menu
+              label="Theme (optional)"
+              .configValue=${'theme'}
+              @value-changed="${this.valueChanged}"
+              class="dropdown"
+            >
+              <paper-listbox
+                slot="dropdown-content"
+                .selected=${this.config.theme
+                  ? OptionsThemes.indexOf(this.config.theme)
+                  : 1}
+              >
+                ${OptionsThemes.map(
+                  (item) => html` <paper-item>${item}</paper-item> `
+                )}
+              </paper-listbox>
+            </paper-dropdown-menu>
+
+            <paper-dropdown-menu
+              label="Control Style (optional)"
+              .configValue=${'control_style'}
+              @value-changed="${this.valueChanged}"
+              class="dropdown"
+            >
+              <paper-listbox
+                slot="dropdown-content"
+                .selected=${this.config.control_style
+                  ? OptionsControlStyles.indexOf(this.config.control_style)
+                  : 0}
+              >
+                ${OptionsControlStyles.map(
+                  (item) => html` <paper-item>${item}</paper-item> `
+                )}
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </div>
 
           ${this.config.header !== false
             ? html`
                 <div class="side-by-side">
                   <paper-input
                     label="Name (optional)"
-                    .value="${(_k = this.config.header) === null ||
-                    _k === void 0
+                    .value="${(_p = this.config.header) === null ||
+                    _p === void 0
                       ? void 0
-                      : _k.name}"
+                      : _p.name}"
                     .configValue="${'header.name'}"
                     @value-changed="${this.valueChanged}"
                   ></paper-input>
 
                   <ha-icon-input
                     label="Icon (optional)"
-                    .value="${(_l = this.config.header) === null ||
-                    _l === void 0
+                    .value="${(_q = this.config.header) === null ||
+                    _q === void 0
                       ? void 0
-                      : _l.icon}"
+                      : _q.icon}"
                     .configValue=${'header.icon'}
                     @value-changed=${this.valueChanged}
                   ></ha-icon-input>
@@ -3115,15 +3406,15 @@ class SimpleThermostatEditor extends LitElement {
                   <ha-entity-picker
                     label="Toggle Entity (optional)"
                     .hass=${this.hass}
-                    .value="${(_p =
-                      (_o =
-                        (_m = this.config) === null || _m === void 0
+                    .value="${(_t =
+                      (_s =
+                        (_r = this.config) === null || _r === void 0
                           ? void 0
-                          : _m.header) === null || _o === void 0
+                          : _r.header) === null || _s === void 0
                         ? void 0
-                        : _o.toggle) === null || _p === void 0
+                        : _s.toggle) === null || _t === void 0
                       ? void 0
-                      : _p.entity}"
+                      : _t.entity}"
                     .configValue=${'header.toggle.entity'}
                     @change="${this.valueChanged}"
                     allow-custom-entity
@@ -3131,15 +3422,15 @@ class SimpleThermostatEditor extends LitElement {
 
                   <paper-input
                     label="Toggle entity label"
-                    .value="${(_s =
-                      (_r =
-                        (_q = this.config) === null || _q === void 0
+                    .value="${(_w =
+                      (_v =
+                        (_u = this.config) === null || _u === void 0
                           ? void 0
-                          : _q.header) === null || _r === void 0
+                          : _u.header) === null || _v === void 0
                         ? void 0
-                        : _r.toggle) === null || _s === void 0
+                        : _v.toggle) === null || _w === void 0
                       ? void 0
-                      : _s.name}"
+                      : _w.name}"
                     .configValue="${'header.toggle.name'}"
                     @value-changed="${this.valueChanged}"
                   ></paper-input>
@@ -3193,9 +3484,9 @@ class SimpleThermostatEditor extends LitElement {
               <paper-listbox
                 slot="dropdown-content"
                 .selected=${Object.values(OptionsStepLayout).indexOf(
-                  (_t = this.config.layout) === null || _t === void 0
+                  (_x = this.config.layout) === null || _x === void 0
                     ? void 0
-                    : _t.step
+                    : _x.step
                 )}
               >
                 ${Object.values(OptionsStepLayout).map(
@@ -5054,7 +5345,14 @@ class SimpleThermostat extends LitElement {
         ? _c
         : 'column'
     const row = stepLayout === 'row'
-    const classes = [!this.header && 'no-header', action].filter((cx) => !!cx)
+    const classes = [
+      !this.header && 'no-header',
+      action,
+      this.config.theme === 'modern' ? 'modern' : 'standard',
+      this.config.theme === 'modern' && this.config.control_style === 'dial'
+        ? 'style-dial'
+        : 'style-classic',
+    ].filter((cx) => !!cx)
     let sensorsHtml
     if (this.config.version === 3) {
       sensorsHtml = this.sensors

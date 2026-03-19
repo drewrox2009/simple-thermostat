@@ -50,6 +50,8 @@ interface CardConfig {
   decimals?: number
   step_size?: number
   variables?: LooseObject
+  theme?: 'standard' | 'modern'
+  control_style?: 'classic' | 'dial'
   layout?: {
     mode: {
       names: boolean

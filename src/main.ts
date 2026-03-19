@@ -378,7 +378,14 @@ export default class SimpleThermostat extends LitElement {
     const stepLayout = this.config?.layout?.step ?? 'column'
     const row = stepLayout === 'row'
 
-    const classes = [!this.header && 'no-header', action].filter((cx) => !!cx)
+    const classes = [
+      !this.header && 'no-header',
+      action,
+      this.config.theme === 'modern' ? 'modern' : 'standard',
+      this.config.theme === 'modern' && this.config.control_style === 'dial'
+        ? 'style-dial'
+        : 'style-classic',
+    ].filter((cx) => !!cx)
 
     let sensorsHtml
     if (this.config.version === 3) {

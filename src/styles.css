@@ -273,3 +273,204 @@ ha-switch {
   flex: 1;
   padding-right: 4px;
 }
+
+/* 
+ * ==============================================================
+ * ULTRA MODERN THEME (Glassmorphism + Glowing Interactions)
+ * ==============================================================
+ */
+
+ha-card.modern {
+  background: var(--st-modern-bg, rgba(20, 20, 20, 0.4));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  padding: 24px;
+}
+
+ha-card.modern .header__title,
+ha-card.modern .header__icon {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+}
+
+ha-card.modern .body {
+  padding: 16px 0;
+}
+
+ha-card.modern .sensors {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  grid-template-columns: unset;
+}
+
+ha-card.modern .sensor-heading,
+ha-card.modern .sensor-value {
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  font-size: 13px;
+  padding: 0;
+  margin: 0;
+  justify-content: center;
+}
+ha-card.modern .sensor-value {
+  color: #ffffff;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+ha-card.modern .sensor-item {
+  /* Assuming we wrap infoItems in this if needed, else we target their layout */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 8px 16px;
+  text-align: center;
+}
+
+/* Mode Buttons / Bottom Bar */
+ha-card.modern .modes {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  background: transparent;
+  padding: 0;
+}
+
+ha-card.modern .mode-item {
+  flex: 1;
+  flex-direction: row;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 12px 0;
+  font-weight: 500;
+  box-shadow: none;
+  min-height: auto;
+  gap: 8px;
+}
+
+ha-card.modern .mode-item .mode-icon {
+  --iron-icon-width: 20px;
+  --iron-icon-height: 20px;
+}
+
+ha-card.modern .mode-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+ha-card.modern .mode-item.active {
+  background: rgba(43, 154, 249, 0.2);
+  border: 1px solid rgba(43, 154, 249, 0.5);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(43, 154, 249, 0.4),
+    inset 0 0 10px rgba(43, 154, 249, 0.2);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+ha-card.modern .mode-item.active.heat {
+  background: rgba(255, 129, 0, 0.2);
+  border: 1px solid rgba(255, 129, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 129, 0, 0.4),
+    inset 0 0 10px rgba(255, 129, 0, 0.2);
+}
+
+/* 
+ * Control Styles within Modern Theme
+ */
+ha-card.modern .current-wrapper {
+  margin: 32px 0;
+}
+
+ha-card.modern .current--value {
+  color: #ffffff;
+  font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+ha-card.modern .thermostat-trigger {
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 8px;
+}
+
+ha-card.modern .thermostat-trigger:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Style: Classic Numbers with Arrows Stacked */
+ha-card.modern.style-classic .current-wrapper {
+  flex-direction: column;
+}
+
+ha-card.modern.style-classic .current--value {
+  font-size: 56px;
+  line-height: 1;
+  margin: 16px 0;
+}
+
+/* Style: Dial Arc Layout */
+ha-card.modern.style-dial .current-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 8px solid rgba(255, 255, 255, 0.05);
+  border-top-color: rgba(43, 154, 249, 0.8); /* Simulated glowing arc */
+  border-right-color: rgba(43, 154, 249, 0.4);
+  box-shadow: 0 0 30px rgba(43, 154, 249, 0.2),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 24px auto;
+}
+
+ha-card.modern.style-dial .current--value {
+  font-size: 48px;
+  margin: 0;
+  z-index: 2;
+}
+
+ha-card.modern.style-dial .thermostat-trigger {
+  position: absolute;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  width: 100%;
+  height: 50%;
+  border-radius: 0;
+  margin: 0;
+}
+
+ha-card.modern.style-dial .thermostat-trigger:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-up'] {
+  top: 0;
+  align-items: flex-start;
+  padding-top: 16px;
+  border-top-left-radius: 100px;
+  border-top-right-radius: 100px;
+}
+
+ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
+  bottom: 0;
+  align-items: flex-end;
+  padding-bottom: 16px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
