@@ -1,5 +1,4 @@
-import { LitElement, html } from 'lit-element'
-import styles from './styles.css'
+import { LitElement, html, css } from 'lit-element'
 import fireEvent from './fireEvent'
 import { name } from '../package.json'
 
@@ -18,13 +17,9 @@ function setValue(obj, path, value) {
 }
 
 const OptionsDecimals = [0, 1]
-
 const OptionsStepSize = [0.5, 1]
-
 const OptionsStepLayout = ['column', 'row']
-
 const OptionsThemes = ['standard', 'modern']
-
 const OptionsControlStyles = ['classic', 'dial']
 
 const includeDomains = ['climate']
@@ -47,7 +42,73 @@ export default class SimpleThermostatEditor extends LitElement {
   hass: HASS
 
   static get styles() {
-    return styles
+    return css`
+      .card-config {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+      }
+      .overall-config {
+        margin-bottom: 20px;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .row > * {
+        flex: 1;
+        min-width: 0;
+      }
+      .toggle-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      ha-formfield {
+        display: block;
+        margin-bottom: 8px;
+      }
+      .native-select-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      .native-select-wrapper label {
+        font-size: 12px;
+        color: var(--secondary-text-color, #999);
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .native-select-wrapper select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.12));
+        border-radius: 8px;
+        background-color: var(--card-background-color, #1c1c1c);
+        color: var(--primary-text-color, #fff);
+        font-size: 14px;
+        font-family: inherit;
+        appearance: auto;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .native-select-wrapper select:focus {
+        border-color: var(--primary-color, #03a9f4);
+      }
+      .info-text {
+        color: var(--secondary-text-color, #999);
+        font-size: 12px;
+        margin-top: 16px;
+        padding: 8px 0;
+        border-top: 1px solid var(--divider-color, rgba(255, 255, 255, 0.12));
+      }
+    `
   }
 
   static get properties() {
@@ -72,7 +133,8 @@ export default class SimpleThermostatEditor extends LitElement {
     return html`
       <div class="card-config">
         <div class="overall-config">
-          <div class="side-by-side">
+          <!-- Entity Picker -->
+          <div class="row">
             <ha-entity-picker
               label="Entity (required)"
               .hass=${this.hass}
@@ -84,6 +146,7 @@ export default class SimpleThermostatEditor extends LitElement {
             ></ha-entity-picker>
           </div>
 
+          <!-- Toggle Switches -->
           <ha-formfield label="Show header?">
             <ha-switch
               .checked=${this.config.header !== false}
@@ -126,39 +189,51 @@ export default class SimpleThermostatEditor extends LitElement {
             ></ha-switch>
           </ha-formfield>
 
-          <div class="side-by-side">
-            <ha-select
-              label="Theme"
-              .value=${this.config.theme || 'standard'}
-              @change=${(ev) => this._selectChanged(ev, 'theme')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${OptionsThemes.map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
-
-            <ha-select
-              label="Control Style"
-              .value=${this.config.control_style || 'classic'}
-              @change=${(ev) => this._selectChanged(ev, 'control_style')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${OptionsControlStyles.map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
+          <!-- Theme and Control Style -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Theme</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'theme')}
+              >
+                ${OptionsThemes.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${(this.config.theme || 'standard') === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
+            <div class="native-select-wrapper">
+              <label>Control Style</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'control_style')}
+              >
+                ${OptionsControlStyles.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${(this.config.control_style || 'classic') ===
+                      item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
           </div>
 
+          <!-- Header fields -->
           ${this.config.header !== false
             ? html`
-                <div class="side-by-side">
+                <div class="row">
                   <ha-textfield
                     label="Name (optional)"
                     .value="${this.config.header?.name || ''}"
@@ -174,7 +249,7 @@ export default class SimpleThermostatEditor extends LitElement {
                   ></ha-icon-input>
                 </div>
 
-                <div class="side-by-side">
+                <div class="row">
                   <ha-entity-picker
                     label="Toggle Entity (optional)"
                     .hass=${this.hass}
@@ -194,7 +269,8 @@ export default class SimpleThermostatEditor extends LitElement {
               `
             : ''}
 
-          <div class="side-by-side">
+          <!-- Fallback -->
+          <div class="row">
             <ha-textfield
               label="Fallback Text (optional)"
               .value="${this.config.fallback || ''}"
@@ -203,23 +279,26 @@ export default class SimpleThermostatEditor extends LitElement {
             ></ha-textfield>
           </div>
 
-          <div class="side-by-side">
-            <ha-select
-              label="Decimals"
-              .value=${String(this.config.decimals ?? 1)}
-              @change=${(ev) => this._selectChanged(ev, 'decimals')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsDecimals).map(
-                (item) =>
-                  html`<mwc-list-item .value=${String(item)}
-                    >${item}</mwc-list-item
-                  >`
-              )}
-            </ha-select>
-
+          <!-- Decimals and Unit -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Decimals</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'decimals')}
+              >
+                ${OptionsDecimals.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${Number(this.config.decimals ?? 1) === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
             <ha-textfield
               label="Unit (optional)"
               .value="${this.config.unit || ''}"
@@ -228,45 +307,53 @@ export default class SimpleThermostatEditor extends LitElement {
             ></ha-textfield>
           </div>
 
-          <div class="side-by-side">
-            <ha-select
-              label="Step Layout"
-              .value=${this.config.layout?.step || 'column'}
-              @change=${(ev) => this._selectChanged(ev, 'layout.step')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsStepLayout).map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
-
-            <ha-select
-              label="Step Size"
-              .value=${String(this.config.step_size ?? 0.5)}
-              @change=${(ev) => this._selectChanged(ev, 'step_size')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsStepSize).map(
-                (item) =>
-                  html`<mwc-list-item .value=${String(item)}
-                    >${item}</mwc-list-item
-                  >`
-              )}
-            </ha-select>
+          <!-- Step Layout and Size -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Step Layout</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'layout.step')}
+              >
+                ${OptionsStepLayout.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${(this.config.layout?.step || 'column') ===
+                      item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
+            <div class="native-select-wrapper">
+              <label>Step Size</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'step_size')}
+              >
+                ${OptionsStepSize.map(
+                  (item) => html`
+                    <option
+                      value=${String(item)}
+                      ?selected=${Number(this.config.step_size ?? 0.5) === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
           </div>
 
-          <div class="side-by-side">
+          <div class="info-text">
             <mwc-button @click=${this._openLink}>
               Configuration Options
             </mwc-button>
-
-            Settings for label, control, sensors, faults and hiding UI elements
-            can only be configured in the code editor
+            Advanced settings for sensors, faults, and labels can be configured
+            in the code editor.
           </div>
         </div>
       </div>
@@ -274,12 +361,10 @@ export default class SimpleThermostatEditor extends LitElement {
   }
 
   /**
-   * Dedicated handler for ha-select / mwc-select dropdowns.
-   * Reads ev.target.value directly and writes it to the config path.
+   * Handler for native <select> dropdowns.
    */
-  _selectChanged(ev, configPath: string) {
+  _nativeSelectChanged(value: string, configPath: string) {
     if (!this.config || !this.hass) return
-    const value = ev.target.value
     if (value === undefined || value === null) return
     const copy = cloneDeep(this.config)
     setValue(copy, configPath, value)

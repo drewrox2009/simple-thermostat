@@ -226,7 +226,7 @@ export default class SimpleThermostat extends LitElement {
       const entries = Object.entries(this.config.control)
       if (entries.length > 0) {
         controlModes = entries
-          .filter(([type]) => supportedModeType(type))
+          .filter(([type, def]) => supportedModeType(type) && def !== false)
           .map(([type, definition]: [string, ModeControlObject]) => {
             const { _name, _hide_when_off, ...controlField } = definition
             return {

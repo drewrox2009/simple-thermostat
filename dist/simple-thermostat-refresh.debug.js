@@ -2608,6 +2608,700 @@ LitElement['finalized'] = true
  */
 LitElement.render = render$1
 
+function fireEvent(node, type, detail, options = {}) {
+  options = options || {}
+  detail = detail === null || detail === undefined ? {} : detail
+  const event = new Event(type, {
+    bubbles: options.bubbles === undefined ? true : options.bubbles,
+    cancelable: Boolean(options.cancelable),
+    composed: options.composed === undefined ? true : options.composed,
+  })
+  event.detail = detail
+  node.dispatchEvent(event)
+  return event
+}
+
+function setValue(obj, path, value) {
+  const pathFragments = path.split('.')
+  let o = obj
+  while (pathFragments.length - 1) {
+    var fragment = pathFragments.shift()
+    if (!o.hasOwnProperty(fragment)) o[fragment] = {}
+    o = o[fragment]
+  }
+  o[pathFragments[0]] = value
+}
+const OptionsDecimals = [0, 1]
+const OptionsStepSize = [0.5, 1]
+const OptionsStepLayout = ['column', 'row']
+const OptionsThemes = ['standard', 'modern']
+const OptionsControlStyles = ['classic', 'dial']
+const includeDomains = ['climate']
+const GithubReadMe =
+  'https://github.com/nervetattoo/simple-thermostat/blob/master/README.md'
+const stub = {
+  header: {},
+  control: {},
+  layout: {
+    mode: {},
+  },
+}
+const cloneDeep = (obj) => JSON.parse(JSON.stringify(obj))
+class SimpleThermostatEditor extends LitElement {
+  static get styles() {
+    return css`
+      .card-config {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+      }
+      .overall-config {
+        margin-bottom: 20px;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .row > * {
+        flex: 1;
+        min-width: 0;
+      }
+      .toggle-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      ha-formfield {
+        display: block;
+        margin-bottom: 8px;
+      }
+      .native-select-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      .native-select-wrapper label {
+        font-size: 12px;
+        color: var(--secondary-text-color, #999);
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+      .native-select-wrapper select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.12));
+        border-radius: 8px;
+        background-color: var(--card-background-color, #1c1c1c);
+        color: var(--primary-text-color, #fff);
+        font-size: 14px;
+        font-family: inherit;
+        appearance: auto;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .native-select-wrapper select:focus {
+        border-color: var(--primary-color, #03a9f4);
+      }
+      .info-text {
+        color: var(--secondary-text-color, #999);
+        font-size: 12px;
+        margin-top: 16px;
+        padding: 8px 0;
+        border-top: 1px solid var(--divider-color, rgba(255, 255, 255, 0.12));
+      }
+    `
+  }
+  static get properties() {
+    return { hass: {}, config: {} }
+  }
+  static getStubConfig() {
+    return Object.assign({}, stub)
+  }
+  setConfig(config) {
+    this.config = config || Object.assign({}, stub)
+  }
+  _openLink() {
+    window.open(GithubReadMe)
+  }
+  render() {
+    var _a,
+      _b,
+      _c,
+      _d,
+      _e,
+      _f,
+      _g,
+      _h,
+      _j,
+      _k,
+      _l,
+      _m,
+      _o,
+      _p,
+      _q,
+      _r,
+      _s,
+      _t,
+      _u,
+      _v,
+      _w
+    if (!this.hass) return html``
+    return html`
+      <div class="card-config">
+        <div class="overall-config">
+          <!-- Entity Picker -->
+          <div class="row">
+            <ha-entity-picker
+              label="Entity (required)"
+              .hass=${this.hass}
+              .value="${this.config.entity}"
+              .configValue=${'entity'}
+              .includeDomains=${includeDomains}
+              @change="${this.valueChanged}"
+              allow-custom-entity
+            ></ha-entity-picker>
+          </div>
+
+          <!-- Toggle Switches -->
+          <ha-formfield label="Show header?">
+            <ha-switch
+              .checked=${this.config.header !== false}
+              @change=${this.toggleHeader}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show mode names?">
+            <ha-switch
+              .checked=${((_c =
+                (_b =
+                  (_a = this.config) === null || _a === void 0
+                    ? void 0
+                    : _a.layout) === null || _b === void 0
+                  ? void 0
+                  : _b.mode) === null || _c === void 0
+                ? void 0
+                : _c.names) !== false}
+              .configValue="${'layout.mode.names'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show mode icons?">
+            <ha-switch
+              .checked=${((_f =
+                (_e =
+                  (_d = this.config) === null || _d === void 0
+                    ? void 0
+                    : _d.layout) === null || _e === void 0
+                  ? void 0
+                  : _e.mode) === null || _f === void 0
+                ? void 0
+                : _f.icons) !== false}
+              .configValue="${'layout.mode.icons'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show mode headings?">
+            <ha-switch
+              .checked=${((_j =
+                (_h =
+                  (_g = this.config) === null || _g === void 0
+                    ? void 0
+                    : _g.layout) === null || _h === void 0
+                  ? void 0
+                  : _h.mode) === null || _j === void 0
+                ? void 0
+                : _j.headings) !== false}
+              .configValue="${'layout.mode.headings'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show HVAC modes?">
+            <ha-switch
+              .checked=${((_l =
+                (_k = this.config) === null || _k === void 0
+                  ? void 0
+                  : _k.control) === null || _l === void 0
+                ? void 0
+                : _l.hvac) !== false}
+              .configValue="${'control.hvac'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show preset modes?">
+            <ha-switch
+              .checked=${((_o =
+                (_m = this.config) === null || _m === void 0
+                  ? void 0
+                  : _m.control) === null || _o === void 0
+                ? void 0
+                : _o.preset) !== false}
+              .configValue="${'control.preset'}"
+              @change=${this.valueChanged}
+            ></ha-switch>
+          </ha-formfield>
+
+          <!-- Theme and Control Style -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Theme</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'theme')}
+              >
+                ${OptionsThemes.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${(this.config.theme || 'standard') === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
+            <div class="native-select-wrapper">
+              <label>Control Style</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'control_style')}
+              >
+                ${OptionsControlStyles.map(
+                  (item) => html`
+                    <option
+                      value=${item}
+                      ?selected=${(this.config.control_style || 'classic') ===
+                      item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                )}
+              </select>
+            </div>
+          </div>
+
+          <!-- Header fields -->
+          ${this.config.header !== false
+            ? html`
+                <div class="row">
+                  <ha-textfield
+                    label="Name (optional)"
+                    .value="${((_p = this.config.header) === null ||
+                    _p === void 0
+                      ? void 0
+                      : _p.name) || ''}"
+                    .configValue="${'header.name'}"
+                    @input="${this.valueChanged}"
+                  ></ha-textfield>
+
+                  <ha-icon-input
+                    label="Icon (optional)"
+                    .value="${((_q = this.config.header) === null ||
+                    _q === void 0
+                      ? void 0
+                      : _q.icon) || ''}"
+                    .configValue=${'header.icon'}
+                    @value-changed=${this.valueChanged}
+                  ></ha-icon-input>
+                </div>
+
+                <div class="row">
+                  <ha-entity-picker
+                    label="Toggle Entity (optional)"
+                    .hass=${this.hass}
+                    .value="${(_t =
+                      (_s =
+                        (_r = this.config) === null || _r === void 0
+                          ? void 0
+                          : _r.header) === null || _s === void 0
+                        ? void 0
+                        : _s.toggle) === null || _t === void 0
+                      ? void 0
+                      : _t.entity}"
+                    .configValue=${'header.toggle.entity'}
+                    @change="${this.valueChanged}"
+                    allow-custom-entity
+                  ></ha-entity-picker>
+
+                  <ha-textfield
+                    label="Toggle entity label"
+                    .value="${((_w =
+                      (_v =
+                        (_u = this.config) === null || _u === void 0
+                          ? void 0
+                          : _u.header) === null || _v === void 0
+                        ? void 0
+                        : _v.toggle) === null || _w === void 0
+                      ? void 0
+                      : _w.name) || ''}"
+                    .configValue="${'header.toggle.name'}"
+                    @input="${this.valueChanged}"
+                  ></ha-textfield>
+                </div>
+              `
+            : ''}
+
+          <!-- Fallback -->
+          <div class="row">
+            <ha-textfield
+              label="Fallback Text (optional)"
+              .value="${this.config.fallback || ''}"
+              .configValue="${'fallback'}"
+              @input="${this.valueChanged}"
+            ></ha-textfield>
+          </div>
+
+          <!-- Decimals and Unit -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Decimals</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'decimals')}
+              >
+                ${OptionsDecimals.map((item) => {
+                  var _a
+                  return html`
+                    <option
+                      value=${item}
+                      ?selected=${Number(
+                        (_a = this.config.decimals) !== null && _a !== void 0
+                          ? _a
+                          : 1
+                      ) === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                })}
+              </select>
+            </div>
+            <ha-textfield
+              label="Unit (optional)"
+              .value="${this.config.unit || ''}"
+              .configValue="${'unit'}"
+              @input="${this.valueChanged}"
+            ></ha-textfield>
+          </div>
+
+          <!-- Step Layout and Size -->
+          <div class="row">
+            <div class="native-select-wrapper">
+              <label>Step Layout</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'layout.step')}
+              >
+                ${OptionsStepLayout.map((item) => {
+                  var _a
+                  return html`
+                    <option
+                      value=${item}
+                      ?selected=${(((_a = this.config.layout) === null ||
+                      _a === void 0
+                        ? void 0
+                        : _a.step) || 'column') === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                })}
+              </select>
+            </div>
+            <div class="native-select-wrapper">
+              <label>Step Size</label>
+              <select
+                @change=${(ev) =>
+                  this._nativeSelectChanged(ev.target.value, 'step_size')}
+              >
+                ${OptionsStepSize.map((item) => {
+                  var _a
+                  return html`
+                    <option
+                      value=${String(item)}
+                      ?selected=${Number(
+                        (_a = this.config.step_size) !== null && _a !== void 0
+                          ? _a
+                          : 0.5
+                      ) === item}
+                    >
+                      ${item}
+                    </option>
+                  `
+                })}
+              </select>
+            </div>
+          </div>
+
+          <div class="info-text">
+            <mwc-button @click=${this._openLink}>
+              Configuration Options
+            </mwc-button>
+            Advanced settings for sensors, faults, and labels can be configured
+            in the code editor.
+          </div>
+        </div>
+      </div>
+    `
+  }
+  /**
+   * Handler for native <select> dropdowns.
+   */
+  _nativeSelectChanged(value, configPath) {
+    if (!this.config || !this.hass) return
+    if (value === undefined || value === null) return
+    const copy = cloneDeep(this.config)
+    setValue(copy, configPath, value)
+    fireEvent(this, 'config-changed', { config: copy })
+  }
+  valueChanged(ev) {
+    if (!this.config || !this.hass) {
+      return
+    }
+    const target = ev.currentTarget || ev.target
+    const copy = cloneDeep(this.config)
+    if (target.configValue) {
+      if (target.value === '') {
+        delete copy[target.configValue]
+      } else {
+        setValue(
+          copy,
+          target.configValue,
+          target.checked !== undefined ? target.checked : target.value
+        )
+      }
+    }
+    fireEvent(this, 'config-changed', { config: copy })
+  }
+  toggleHeader(ev) {
+    this.config.header = ev.target.checked ? {} : false
+    fireEvent(this, 'config-changed', { config: this.config })
+  }
+}
+
+function __rest(s, e) {
+  var t = {}
+  for (var p in s)
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+      t[p] = s[p]
+  if (s != null && typeof Object.getOwnPropertySymbols === 'function')
+    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+      if (
+        e.indexOf(p[i]) < 0 &&
+        Object.prototype.propertyIsEnumerable.call(s, p[i])
+      )
+        t[p[i]] = s[p[i]]
+    }
+  return t
+}
+
+function __decorate(decorators, target, key, desc) {
+  var c = arguments.length,
+    r =
+      c < 3
+        ? target
+        : desc === null
+        ? (desc = Object.getOwnPropertyDescriptor(target, key))
+        : desc,
+    d
+  if (typeof Reflect === 'object' && typeof Reflect.decorate === 'function')
+    r = Reflect.decorate(decorators, target, key, desc)
+  else
+    for (var i = decorators.length - 1; i >= 0; i--)
+      if ((d = decorators[i]))
+        r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r
+  return c > 3 && r && Object.defineProperty(target, key, r), r
+}
+
+const copyProperty = (to, from, property, ignoreNonConfigurable) => {
+  // `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
+  // `Function#prototype` is non-writable and non-configurable so can never be modified.
+  if (property === 'length' || property === 'prototype') {
+    return
+  }
+
+  // `Function#arguments` and `Function#caller` should not be copied. They were reported to be present in `Reflect.ownKeys` for some devices in React Native (#41), so we explicitly ignore them here.
+  if (property === 'arguments' || property === 'caller') {
+    return
+  }
+
+  const toDescriptor = Object.getOwnPropertyDescriptor(to, property)
+  const fromDescriptor = Object.getOwnPropertyDescriptor(from, property)
+
+  if (!canCopyProperty(toDescriptor, fromDescriptor) && ignoreNonConfigurable) {
+    return
+  }
+
+  Object.defineProperty(to, property, fromDescriptor)
+}
+
+// `Object.defineProperty()` throws if the property exists, is not configurable and either:
+//  - one its descriptors is changed
+//  - it is non-writable and its value is changed
+const canCopyProperty = function (toDescriptor, fromDescriptor) {
+  return (
+    toDescriptor === undefined ||
+    toDescriptor.configurable ||
+    (toDescriptor.writable === fromDescriptor.writable &&
+      toDescriptor.enumerable === fromDescriptor.enumerable &&
+      toDescriptor.configurable === fromDescriptor.configurable &&
+      (toDescriptor.writable || toDescriptor.value === fromDescriptor.value))
+  )
+}
+
+const changePrototype = (to, from) => {
+  const fromPrototype = Object.getPrototypeOf(from)
+  if (fromPrototype === Object.getPrototypeOf(to)) {
+    return
+  }
+
+  Object.setPrototypeOf(to, fromPrototype)
+}
+
+const wrappedToString = (withName, fromBody) =>
+  `/* Wrapped ${withName}*/\n${fromBody}`
+
+const toStringDescriptor = Object.getOwnPropertyDescriptor(
+  Function.prototype,
+  'toString'
+)
+const toStringName = Object.getOwnPropertyDescriptor(
+  Function.prototype.toString,
+  'name'
+)
+
+// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
+// We use `bind()` instead of a closure for the same reason.
+// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
+const changeToString = (to, from, name) => {
+  const withName = name === '' ? '' : `with ${name.trim()}() `
+  const newToString = wrappedToString.bind(null, withName, from.toString())
+  // Ensure `to.toString.toString` is non-enumerable and has the same `same`
+  Object.defineProperty(newToString, 'name', toStringName)
+  Object.defineProperty(to, 'toString', {
+    ...toStringDescriptor,
+    value: newToString,
+  })
+}
+
+const mimicFn = (to, from, { ignoreNonConfigurable = false } = {}) => {
+  const { name } = to
+
+  for (const property of Reflect.ownKeys(from)) {
+    copyProperty(to, from, property, ignoreNonConfigurable)
+  }
+
+  changePrototype(to, from)
+  changeToString(to, from, name)
+
+  return to
+}
+
+var mimicFn_1 = mimicFn
+
+const debounceFn = (inputFunction, options = {}) => {
+  if (typeof inputFunction !== 'function') {
+    throw new TypeError(
+      `Expected the first argument to be a function, got \`${typeof inputFunction}\``
+    )
+  }
+
+  const {
+    wait = 0,
+    maxWait = Number.Infinity,
+    before = false,
+    after = true,
+  } = options
+
+  if (!before && !after) {
+    throw new Error(
+      "Both `before` and `after` are false, function wouldn't be called."
+    )
+  }
+
+  let timeout
+  let maxTimeout
+  let result
+
+  const debouncedFunction = function (...arguments_) {
+    const context = this
+
+    const later = () => {
+      timeout = undefined
+
+      if (maxTimeout) {
+        clearTimeout(maxTimeout)
+        maxTimeout = undefined
+      }
+
+      if (after) {
+        result = inputFunction.apply(context, arguments_)
+      }
+    }
+
+    const maxLater = () => {
+      maxTimeout = undefined
+
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = undefined
+      }
+
+      if (after) {
+        result = inputFunction.apply(context, arguments_)
+      }
+    }
+
+    const shouldCallNow = before && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+
+    if (maxWait > 0 && maxWait !== Number.Infinity && !maxTimeout) {
+      maxTimeout = setTimeout(maxLater, maxWait)
+    }
+
+    if (shouldCallNow) {
+      result = inputFunction.apply(context, arguments_)
+    }
+
+    return result
+  }
+
+  mimicFn_1(debouncedFunction, inputFunction)
+
+  debouncedFunction.cancel = () => {
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = undefined
+    }
+
+    if (maxTimeout) {
+      clearTimeout(maxTimeout)
+      maxTimeout = undefined
+    }
+  }
+
+  return debouncedFunction
+}
+
+function isEqual(a, b) {
+  const keys = Object.keys(a)
+  if (keys.length !== Object.keys(b).length) {
+    return false
+  }
+  return !keys.some(
+    (key) =>
+      (a === null || a === void 0 ? void 0 : a[key]) !==
+      (b === null || b === void 0 ? void 0 : b[key])
+  )
+}
+
 function styleInject(css, ref) {
   if (ref === void 0) ref = {}
   var insertAt = ref.insertAt
@@ -3194,606 +3888,6 @@ var css_248z = css`
   }
 `
 styleInject(css_248z)
-
-function fireEvent(node, type, detail, options = {}) {
-  options = options || {}
-  detail = detail === null || detail === undefined ? {} : detail
-  const event = new Event(type, {
-    bubbles: options.bubbles === undefined ? true : options.bubbles,
-    cancelable: Boolean(options.cancelable),
-    composed: options.composed === undefined ? true : options.composed,
-  })
-  event.detail = detail
-  node.dispatchEvent(event)
-  return event
-}
-
-function setValue(obj, path, value) {
-  const pathFragments = path.split('.')
-  let o = obj
-  while (pathFragments.length - 1) {
-    var fragment = pathFragments.shift()
-    if (!o.hasOwnProperty(fragment)) o[fragment] = {}
-    o = o[fragment]
-  }
-  o[pathFragments[0]] = value
-}
-const OptionsDecimals = [0, 1]
-const OptionsStepSize = [0.5, 1]
-const OptionsStepLayout = ['column', 'row']
-const OptionsThemes = ['standard', 'modern']
-const OptionsControlStyles = ['classic', 'dial']
-const includeDomains = ['climate']
-const GithubReadMe =
-  'https://github.com/nervetattoo/simple-thermostat/blob/master/README.md'
-const stub = {
-  header: {},
-  control: {},
-  layout: {
-    mode: {},
-  },
-}
-const cloneDeep = (obj) => JSON.parse(JSON.stringify(obj))
-class SimpleThermostatEditor extends LitElement {
-  static get styles() {
-    return css_248z
-  }
-  static get properties() {
-    return { hass: {}, config: {} }
-  }
-  static getStubConfig() {
-    return Object.assign({}, stub)
-  }
-  setConfig(config) {
-    this.config = config || Object.assign({}, stub)
-  }
-  _openLink() {
-    window.open(GithubReadMe)
-  }
-  render() {
-    var _a,
-      _b,
-      _c,
-      _d,
-      _e,
-      _f,
-      _g,
-      _h,
-      _j,
-      _k,
-      _l,
-      _m,
-      _o,
-      _p,
-      _q,
-      _r,
-      _s,
-      _t,
-      _u,
-      _v,
-      _w,
-      _x,
-      _y,
-      _z
-    if (!this.hass) return html``
-    return html`
-      <div class="card-config">
-        <div class="overall-config">
-          <div class="side-by-side">
-            <ha-entity-picker
-              label="Entity (required)"
-              .hass=${this.hass}
-              .value="${this.config.entity}"
-              .configValue=${'entity'}
-              .includeDomains=${includeDomains}
-              @change="${this.valueChanged}"
-              allow-custom-entity
-            ></ha-entity-picker>
-          </div>
-
-          <ha-formfield label="Show header?">
-            <ha-switch
-              .checked=${this.config.header !== false}
-              @change=${this.toggleHeader}
-            ></ha-switch>
-          </ha-formfield>
-          <ha-formfield label="Show mode names?">
-            <ha-switch
-              .checked=${((_c =
-                (_b =
-                  (_a = this.config) === null || _a === void 0
-                    ? void 0
-                    : _a.layout) === null || _b === void 0
-                  ? void 0
-                  : _b.mode) === null || _c === void 0
-                ? void 0
-                : _c.names) !== false}
-              .configValue="${'layout.mode.names'}"
-              @change=${this.valueChanged}
-            ></ha-switch>
-          </ha-formfield>
-          <ha-formfield label="Show mode icons?">
-            <ha-switch
-              .checked=${((_f =
-                (_e =
-                  (_d = this.config) === null || _d === void 0
-                    ? void 0
-                    : _d.layout) === null || _e === void 0
-                  ? void 0
-                  : _e.mode) === null || _f === void 0
-                ? void 0
-                : _f.icons) !== false}
-              .configValue="${'layout.mode.icons'}"
-              @change=${this.valueChanged}
-            ></ha-switch>
-          </ha-formfield>
-          <ha-formfield label="Show mode headings?">
-            <ha-switch
-              .checked=${((_j =
-                (_h =
-                  (_g = this.config) === null || _g === void 0
-                    ? void 0
-                    : _g.layout) === null || _h === void 0
-                  ? void 0
-                  : _h.mode) === null || _j === void 0
-                ? void 0
-                : _j.headings) !== false}
-              .configValue="${'layout.mode.headings'}"
-              @change=${this.valueChanged}
-            ></ha-switch>
-          </ha-formfield>
-          <ha-formfield label="Show HVAC modes?">
-            <ha-switch
-              .checked=${((_l =
-                (_k = this.config) === null || _k === void 0
-                  ? void 0
-                  : _k.control) === null || _l === void 0
-                ? void 0
-                : _l.hvac) !== false}
-              .configValue="${'control.hvac'}"
-              @change=${this.valueChanged}
-            ></ha-switch>
-          </ha-formfield>
-          <ha-formfield label="Show preset modes?">
-            <ha-switch
-              .checked=${((_o =
-                (_m = this.config) === null || _m === void 0
-                  ? void 0
-                  : _m.control) === null || _o === void 0
-                ? void 0
-                : _o.preset) !== false}
-              .configValue="${'control.preset'}"
-              @change=${this.valueChanged}
-            ></ha-switch>
-          </ha-formfield>
-
-          <div class="side-by-side">
-            <ha-select
-              label="Theme"
-              .value=${this.config.theme || 'standard'}
-              @change=${(ev) => this._selectChanged(ev, 'theme')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${OptionsThemes.map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
-
-            <ha-select
-              label="Control Style"
-              .value=${this.config.control_style || 'classic'}
-              @change=${(ev) => this._selectChanged(ev, 'control_style')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${OptionsControlStyles.map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
-          </div>
-
-          ${this.config.header !== false
-            ? html`
-                <div class="side-by-side">
-                  <ha-textfield
-                    label="Name (optional)"
-                    .value="${((_p = this.config.header) === null ||
-                    _p === void 0
-                      ? void 0
-                      : _p.name) || ''}"
-                    .configValue="${'header.name'}"
-                    @input="${this.valueChanged}"
-                  ></ha-textfield>
-
-                  <ha-icon-input
-                    label="Icon (optional)"
-                    .value="${((_q = this.config.header) === null ||
-                    _q === void 0
-                      ? void 0
-                      : _q.icon) || ''}"
-                    .configValue=${'header.icon'}
-                    @value-changed=${this.valueChanged}
-                  ></ha-icon-input>
-                </div>
-
-                <div class="side-by-side">
-                  <ha-entity-picker
-                    label="Toggle Entity (optional)"
-                    .hass=${this.hass}
-                    .value="${(_t =
-                      (_s =
-                        (_r = this.config) === null || _r === void 0
-                          ? void 0
-                          : _r.header) === null || _s === void 0
-                        ? void 0
-                        : _s.toggle) === null || _t === void 0
-                      ? void 0
-                      : _t.entity}"
-                    .configValue=${'header.toggle.entity'}
-                    @change="${this.valueChanged}"
-                    allow-custom-entity
-                  ></ha-entity-picker>
-
-                  <ha-textfield
-                    label="Toggle entity label"
-                    .value="${((_w =
-                      (_v =
-                        (_u = this.config) === null || _u === void 0
-                          ? void 0
-                          : _u.header) === null || _v === void 0
-                        ? void 0
-                        : _v.toggle) === null || _w === void 0
-                      ? void 0
-                      : _w.name) || ''}"
-                    .configValue="${'header.toggle.name'}"
-                    @input="${this.valueChanged}"
-                  ></ha-textfield>
-                </div>
-              `
-            : ''}
-
-          <div class="side-by-side">
-            <ha-textfield
-              label="Fallback Text (optional)"
-              .value="${this.config.fallback || ''}"
-              .configValue="${'fallback'}"
-              @input="${this.valueChanged}"
-            ></ha-textfield>
-          </div>
-
-          <div class="side-by-side">
-            <ha-select
-              label="Decimals"
-              .value=${String(
-                (_x = this.config.decimals) !== null && _x !== void 0 ? _x : 1
-              )}
-              @change=${(ev) => this._selectChanged(ev, 'decimals')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsDecimals).map(
-                (item) => html`<mwc-list-item .value=${String(item)}
-                  >${item}</mwc-list-item
-                >`
-              )}
-            </ha-select>
-
-            <ha-textfield
-              label="Unit (optional)"
-              .value="${this.config.unit || ''}"
-              .configValue="${'unit'}"
-              @input="${this.valueChanged}"
-            ></ha-textfield>
-          </div>
-
-          <div class="side-by-side">
-            <ha-select
-              label="Step Layout"
-              .value=${((_y = this.config.layout) === null || _y === void 0
-                ? void 0
-                : _y.step) || 'column'}
-              @change=${(ev) => this._selectChanged(ev, 'layout.step')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsStepLayout).map(
-                (item) =>
-                  html`<mwc-list-item .value=${item}>${item}</mwc-list-item>`
-              )}
-            </ha-select>
-
-            <ha-select
-              label="Step Size"
-              .value=${String(
-                (_z = this.config.step_size) !== null && _z !== void 0
-                  ? _z
-                  : 0.5
-              )}
-              @change=${(ev) => this._selectChanged(ev, 'step_size')}
-              @closed=${(e) => e.stopPropagation()}
-              .fixedMenuPosition=${true}
-              class="dropdown"
-            >
-              ${Object.values(OptionsStepSize).map(
-                (item) => html`<mwc-list-item .value=${String(item)}
-                  >${item}</mwc-list-item
-                >`
-              )}
-            </ha-select>
-          </div>
-
-          <div class="side-by-side">
-            <mwc-button @click=${this._openLink}>
-              Configuration Options
-            </mwc-button>
-
-            Settings for label, control, sensors, faults and hiding UI elements
-            can only be configured in the code editor
-          </div>
-        </div>
-      </div>
-    `
-  }
-  /**
-   * Dedicated handler for ha-select / mwc-select dropdowns.
-   * Reads ev.target.value directly and writes it to the config path.
-   */
-  _selectChanged(ev, configPath) {
-    if (!this.config || !this.hass) return
-    const value = ev.target.value
-    if (value === undefined || value === null) return
-    const copy = cloneDeep(this.config)
-    setValue(copy, configPath, value)
-    fireEvent(this, 'config-changed', { config: copy })
-  }
-  valueChanged(ev) {
-    if (!this.config || !this.hass) {
-      return
-    }
-    const target = ev.currentTarget || ev.target
-    const copy = cloneDeep(this.config)
-    if (target.configValue) {
-      if (target.value === '') {
-        delete copy[target.configValue]
-      } else {
-        setValue(
-          copy,
-          target.configValue,
-          target.checked !== undefined ? target.checked : target.value
-        )
-      }
-    }
-    fireEvent(this, 'config-changed', { config: copy })
-  }
-  toggleHeader(ev) {
-    this.config.header = ev.target.checked ? {} : false
-    fireEvent(this, 'config-changed', { config: this.config })
-  }
-}
-
-function __rest(s, e) {
-  var t = {}
-  for (var p in s)
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-      t[p] = s[p]
-  if (s != null && typeof Object.getOwnPropertySymbols === 'function')
-    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-      if (
-        e.indexOf(p[i]) < 0 &&
-        Object.prototype.propertyIsEnumerable.call(s, p[i])
-      )
-        t[p[i]] = s[p[i]]
-    }
-  return t
-}
-
-function __decorate(decorators, target, key, desc) {
-  var c = arguments.length,
-    r =
-      c < 3
-        ? target
-        : desc === null
-        ? (desc = Object.getOwnPropertyDescriptor(target, key))
-        : desc,
-    d
-  if (typeof Reflect === 'object' && typeof Reflect.decorate === 'function')
-    r = Reflect.decorate(decorators, target, key, desc)
-  else
-    for (var i = decorators.length - 1; i >= 0; i--)
-      if ((d = decorators[i]))
-        r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r
-  return c > 3 && r && Object.defineProperty(target, key, r), r
-}
-
-const copyProperty = (to, from, property, ignoreNonConfigurable) => {
-  // `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
-  // `Function#prototype` is non-writable and non-configurable so can never be modified.
-  if (property === 'length' || property === 'prototype') {
-    return
-  }
-
-  // `Function#arguments` and `Function#caller` should not be copied. They were reported to be present in `Reflect.ownKeys` for some devices in React Native (#41), so we explicitly ignore them here.
-  if (property === 'arguments' || property === 'caller') {
-    return
-  }
-
-  const toDescriptor = Object.getOwnPropertyDescriptor(to, property)
-  const fromDescriptor = Object.getOwnPropertyDescriptor(from, property)
-
-  if (!canCopyProperty(toDescriptor, fromDescriptor) && ignoreNonConfigurable) {
-    return
-  }
-
-  Object.defineProperty(to, property, fromDescriptor)
-}
-
-// `Object.defineProperty()` throws if the property exists, is not configurable and either:
-//  - one its descriptors is changed
-//  - it is non-writable and its value is changed
-const canCopyProperty = function (toDescriptor, fromDescriptor) {
-  return (
-    toDescriptor === undefined ||
-    toDescriptor.configurable ||
-    (toDescriptor.writable === fromDescriptor.writable &&
-      toDescriptor.enumerable === fromDescriptor.enumerable &&
-      toDescriptor.configurable === fromDescriptor.configurable &&
-      (toDescriptor.writable || toDescriptor.value === fromDescriptor.value))
-  )
-}
-
-const changePrototype = (to, from) => {
-  const fromPrototype = Object.getPrototypeOf(from)
-  if (fromPrototype === Object.getPrototypeOf(to)) {
-    return
-  }
-
-  Object.setPrototypeOf(to, fromPrototype)
-}
-
-const wrappedToString = (withName, fromBody) =>
-  `/* Wrapped ${withName}*/\n${fromBody}`
-
-const toStringDescriptor = Object.getOwnPropertyDescriptor(
-  Function.prototype,
-  'toString'
-)
-const toStringName = Object.getOwnPropertyDescriptor(
-  Function.prototype.toString,
-  'name'
-)
-
-// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
-// We use `bind()` instead of a closure for the same reason.
-// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
-const changeToString = (to, from, name) => {
-  const withName = name === '' ? '' : `with ${name.trim()}() `
-  const newToString = wrappedToString.bind(null, withName, from.toString())
-  // Ensure `to.toString.toString` is non-enumerable and has the same `same`
-  Object.defineProperty(newToString, 'name', toStringName)
-  Object.defineProperty(to, 'toString', {
-    ...toStringDescriptor,
-    value: newToString,
-  })
-}
-
-const mimicFn = (to, from, { ignoreNonConfigurable = false } = {}) => {
-  const { name } = to
-
-  for (const property of Reflect.ownKeys(from)) {
-    copyProperty(to, from, property, ignoreNonConfigurable)
-  }
-
-  changePrototype(to, from)
-  changeToString(to, from, name)
-
-  return to
-}
-
-var mimicFn_1 = mimicFn
-
-const debounceFn = (inputFunction, options = {}) => {
-  if (typeof inputFunction !== 'function') {
-    throw new TypeError(
-      `Expected the first argument to be a function, got \`${typeof inputFunction}\``
-    )
-  }
-
-  const {
-    wait = 0,
-    maxWait = Number.Infinity,
-    before = false,
-    after = true,
-  } = options
-
-  if (!before && !after) {
-    throw new Error(
-      "Both `before` and `after` are false, function wouldn't be called."
-    )
-  }
-
-  let timeout
-  let maxTimeout
-  let result
-
-  const debouncedFunction = function (...arguments_) {
-    const context = this
-
-    const later = () => {
-      timeout = undefined
-
-      if (maxTimeout) {
-        clearTimeout(maxTimeout)
-        maxTimeout = undefined
-      }
-
-      if (after) {
-        result = inputFunction.apply(context, arguments_)
-      }
-    }
-
-    const maxLater = () => {
-      maxTimeout = undefined
-
-      if (timeout) {
-        clearTimeout(timeout)
-        timeout = undefined
-      }
-
-      if (after) {
-        result = inputFunction.apply(context, arguments_)
-      }
-    }
-
-    const shouldCallNow = before && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-
-    if (maxWait > 0 && maxWait !== Number.Infinity && !maxTimeout) {
-      maxTimeout = setTimeout(maxLater, maxWait)
-    }
-
-    if (shouldCallNow) {
-      result = inputFunction.apply(context, arguments_)
-    }
-
-    return result
-  }
-
-  mimicFn_1(debouncedFunction, inputFunction)
-
-  debouncedFunction.cancel = () => {
-    if (timeout) {
-      clearTimeout(timeout)
-      timeout = undefined
-    }
-
-    if (maxTimeout) {
-      clearTimeout(maxTimeout)
-      maxTimeout = undefined
-    }
-  }
-
-  return debouncedFunction
-}
-
-function isEqual(a, b) {
-  const keys = Object.keys(a)
-  if (keys.length !== Object.keys(b).length) {
-    return false
-  }
-  return !keys.some(
-    (key) =>
-      (a === null || a === void 0 ? void 0 : a[key]) !==
-      (b === null || b === void 0 ? void 0 : b[key])
-  )
-}
 
 function formatNumber(number, { decimals = 1, fallback = 'N/A' } = {}) {
   const type = typeof number
@@ -5208,7 +5302,7 @@ class SimpleThermostat extends LitElement {
       const entries = Object.entries(this.config.control)
       if (entries.length > 0) {
         controlModes = entries
-          .filter(([type]) => supportedModeType(type))
+          .filter(([type, def]) => supportedModeType(type) && def !== false)
           .map(([type, definition]) => {
             const { _name, _hide_when_off } = definition,
               controlField = __rest(definition, ['_name', '_hide_when_off'])
