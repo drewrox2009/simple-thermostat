@@ -1610,6 +1610,15 @@ function ie(e, t, i, n = {}) {
   })
   return (s.detail = i), e.dispatchEvent(s), s
 }
+function ne(e, t, i) {
+  const n = t.split('.')
+  let s = e
+  for (; n.length - 1; ) {
+    var o = n.shift()
+    s.hasOwnProperty(o) || (s[o] = {}), (s = s[o])
+  }
+  s[n[0]] = i
+}
 !(function (e, t) {
   void 0 === t && (t = {})
   var i = t.insertAt
@@ -1625,14 +1634,15 @@ function ie(e, t, i, n = {}) {
         : s.appendChild(document.createTextNode(e))
   }
 })(te)
-const ne = [0, 1],
-  se = [0.5, 1],
-  oe = ['column', 'row'],
-  re = ['standard', 'modern'],
-  ae = ['classic', 'dial'],
-  le = ['climate'],
-  ce = { header: {}, control: {}, layout: { mode: {} } }
-function de(e, t) {
+const se = [0, 1],
+  oe = [0.5, 1],
+  re = ['column', 'row'],
+  ae = ['standard', 'modern'],
+  le = ['classic', 'dial'],
+  ce = ['climate'],
+  de = { header: {}, control: {}, layout: { mode: {} } },
+  he = (e) => JSON.parse(JSON.stringify(e))
+function ue(e, t) {
   var i = {}
   for (var n in e)
     Object.prototype.hasOwnProperty.call(e, n) &&
@@ -1647,7 +1657,7 @@ function de(e, t) {
   }
   return i
 }
-function he(e, t, i, n) {
+function pe(e, t, i, n) {
   var s,
     o = arguments.length,
     r = o < 3 ? t : null === n ? (n = Object.getOwnPropertyDescriptor(t, i)) : n
@@ -1658,14 +1668,14 @@ function he(e, t, i, n) {
       (s = e[a]) && (r = (o < 3 ? s(r) : o > 3 ? s(t, i, r) : s(t, i)) || r)
   return o > 3 && r && Object.defineProperty(t, i, r), r
 }
-const ue = (e, t, i, n) => {
+const fe = (e, t, i, n) => {
     if ('length' === i || 'prototype' === i) return
     if ('arguments' === i || 'caller' === i) return
     const s = Object.getOwnPropertyDescriptor(e, i),
       o = Object.getOwnPropertyDescriptor(t, i)
-    ;(!pe(s, o) && n) || Object.defineProperty(e, i, o)
+    ;(!ge(s, o) && n) || Object.defineProperty(e, i, o)
   },
-  pe = function (e, t) {
+  ge = function (e, t) {
     return (
       void 0 === e ||
       e.configurable ||
@@ -1675,12 +1685,12 @@ const ue = (e, t, i, n) => {
         (e.writable || e.value === t.value))
     )
   },
-  fe = (e, t) => `/* Wrapped ${e}*/\n${t}`,
-  ge = Object.getOwnPropertyDescriptor(Function.prototype, 'toString'),
-  me = Object.getOwnPropertyDescriptor(Function.prototype.toString, 'name')
-var ve = (e, t, { ignoreNonConfigurable: i = !1 } = {}) => {
+  me = (e, t) => `/* Wrapped ${e}*/\n${t}`,
+  ve = Object.getOwnPropertyDescriptor(Function.prototype, 'toString'),
+  ye = Object.getOwnPropertyDescriptor(Function.prototype.toString, 'name')
+var be = (e, t, { ignoreNonConfigurable: i = !1 } = {}) => {
   const { name: n } = e
-  for (const n of Reflect.ownKeys(t)) ue(e, t, n, i)
+  for (const n of Reflect.ownKeys(t)) fe(e, t, n, i)
   return (
     ((e, t) => {
       const i = Object.getPrototypeOf(t)
@@ -1688,14 +1698,14 @@ var ve = (e, t, { ignoreNonConfigurable: i = !1 } = {}) => {
     })(e, t),
     ((e, t, i) => {
       const n = '' === i ? '' : `with ${i.trim()}() `,
-        s = fe.bind(null, n, t.toString())
-      Object.defineProperty(s, 'name', me),
-        Object.defineProperty(e, 'toString', { ...ge, value: s })
+        s = me.bind(null, n, t.toString())
+      Object.defineProperty(s, 'name', ye),
+        Object.defineProperty(e, 'toString', { ...ve, value: s })
     })(e, t, n),
     e
   )
 }
-const ye = (e, t = {}) => {
+const _e = (e, t = {}) => {
   if ('function' != typeof e)
     throw new TypeError(
       `Expected the first argument to be a function, got \`${typeof e}\``
@@ -1732,19 +1742,19 @@ const ye = (e, t = {}) => {
     )
   }
   return (
-    ve(c, e),
+    be(c, e),
     (c.cancel = () => {
       r && (clearTimeout(r), (r = void 0)), a && (clearTimeout(a), (a = void 0))
     }),
     c
   )
 }
-function be(e, { decimals: t = 1, fallback: i = 'N/A' } = {}) {
+function we(e, { decimals: t = 1, fallback: i = 'N/A' } = {}) {
   return null === e || '' === e || ['boolean', 'undefined'].includes(typeof e)
     ? i
     : Number(e).toFixed(t)
 }
-function _e({
+function xe({
   header: e,
   toggleEntityChanged: t,
   entity: i,
@@ -1789,8 +1799,8 @@ function _e({
   : 'undefined' != typeof global
   ? global
   : 'undefined' != typeof self && self
-var we,
-  xe =
+var Se,
+  $e =
     ((function (e, t) {
       !(function (e) {
         function t(e) {
@@ -2381,28 +2391,28 @@ var we,
           (e.templates = $),
           Object.defineProperty(e, '__esModule', { value: !0 })
       })(t)
-    })((we = { exports: {} }), we.exports),
-    we.exports)
-const Se = new WeakMap(),
-  $e =
-    ((ke = (e) => (t) => {
+    })((Se = { exports: {} }), Se.exports),
+    Se.exports)
+const ke = new WeakMap(),
+  Pe =
+    ((Oe = (e) => (t) => {
       if (!(t instanceof P))
         throw new Error('unsafeHTML can only be used in text bindings')
-      const i = Se.get(t)
+      const i = ke.get(t)
       if (void 0 !== i && x(e) && e === i.value && t.value === i.fragment)
         return
       const n = document.createElement('template')
       n.innerHTML = e
       const s = document.importNode(n.content, !0)
-      t.setValue(s), Se.set(t, { value: e, fragment: s })
+      t.setValue(s), ke.set(t, { value: e, fragment: s })
     }),
     (...e) => {
-      const t = ke(...e)
+      const t = Oe(...e)
       return f.set(t, !0), t
     })
-var ke
-const Pe = (e) => `<ha-icon icon="${e}"></ha-icon>`
-function Oe(e, t) {
+var Oe
+const Ce = (e) => `<ha-icon icon="${e}"></ha-icon>`
+function Ee(e, t) {
   var i, n
   const { type: s, labels: o } =
     null !==
@@ -2417,7 +2427,7 @@ function Oe(e, t) {
     'list' === s ? 'as-list' : 'as-table',
   ].join(' ')}">${t}</div>`
 }
-function Ce({
+function je({
   hide: e = !1,
   hass: t,
   state: i,
@@ -2450,22 +2460,22 @@ function Ce({
         '',
       ].join('.')
     let n = s(i.state, t)
-    'number' == typeof u && (n = be(n, { decimals: u })),
+    'number' == typeof u && (n = we(n, { decimals: u })),
       (p = I`<div class="sensor-value clickable" @click="${() =>
         o(i.entity_id)}">${n} ${h || i.attributes.unit_of_measurement}</div>`)
   } else {
-    let e = 'number' == typeof u ? be(i, { decimals: u }) : i
+    let e = 'number' == typeof u ? we(i, { decimals: u }) : i
     p = I`<div class="sensor-value">${e}${h}</div>`
   }
   if (!1 === c) return p
   const f = d ? I`<ha-icon icon="${d}"></ha-icon>` : I`${c}:`
   return I`<div class="sensor-heading">${f}</div>${p}`
 }
-var Ee
-function je({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
+var Ne
+function Te({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
   var o
   const { type: r, hide_when_off: a, mode: l = 'none', list: c, name: d } = t
-  if (0 === c.length || (a && e === Ee.OFF)) return null
+  if (0 === c.length || (a && e === Ne.OFF)) return null
   let h = `state_attributes.climate.${r}_mode.`
   'hvac' === r && (h = 'component.climate.state._.')
   const u =
@@ -2487,10 +2497,10 @@ function je({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
       )}</div>`
   )}</div>`
 }
-;(xe.defaultConfig.autoEscape = !1),
-  xe.filters.define('icon', Pe),
-  xe.filters.define('join', (e, t = ', ') => e.join(t)),
-  xe.filters.define(
+;($e.defaultConfig.autoEscape = !1),
+  $e.filters.define('icon', Ce),
+  $e.filters.define('join', (e, t = ', ') => e.join(t)),
+  $e.filters.define(
     'css',
     (e, t) =>
       `<span style="${Object.entries(t).reduce(
@@ -2498,7 +2508,7 @@ function je({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
         ''
       )}">${e}</span>`
   ),
-  xe.filters.define('debug', (e) => {
+  $e.filters.define('debug', (e) => {
     try {
       return JSON.stringify(e)
     } catch (t) {
@@ -2513,8 +2523,8 @@ function je({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
       (e.AUTO = 'auto'),
       (e.DRY = 'dry'),
       (e.FAN_ONLY = 'fan_only')
-  })(Ee || (Ee = {}))
-const Ne = {
+  })(Ne || (Ne = {}))
+const Ae = {
     auto: 'mdi:radiator',
     cooling: 'mdi:snowflake',
     fan: 'mdi:fan',
@@ -2522,7 +2532,7 @@ const Ne = {
     idle: 'mdi:radiator-disabled',
     off: 'mdi:radiator-off',
   },
-  Te = {
+  ze = {
     auto: 'hass:autorenew',
     cool: 'hass:snowflake',
     dry: 'hass:water-percent',
@@ -2531,7 +2541,7 @@ const Ne = {
     heat: 'hass:fire',
     off: 'hass:power',
   }
-function Ae(e, t) {
+function Ve(e, t) {
   var i
   const n = t.states[e.entity]
   let s = ''
@@ -2545,11 +2555,11 @@ function Ae(e, t) {
     { entity: n, label: s }
   )
 }
-function ze(e, t) {
+function Re(e, t) {
   return Array.isArray(e)
     ? e.map((e) => {
         var { entity: i } = e,
-          n = de(e, ['entity'])
+          n = ue(e, ['entity'])
         return Object.assign(Object.assign({}, n), {
           state: t.states[i],
           entity: i,
@@ -2557,21 +2567,21 @@ function ze(e, t) {
       })
     : []
 }
-var Ve
+var Ie
 !(function (e) {
   ;(e.HVAC = 'hvac'),
     (e.FAN = 'fan'),
     (e.PRESET = 'preset'),
     (e.SWING = 'swing')
-})(Ve || (Ve = {}))
-const Re = Object.values(Ve),
-  Ie = [Ve.HVAC, Ve.PRESET],
-  Me = 'hass:chevron-up',
-  Ue = 'hass:chevron-down',
-  Fe = 'mdi:plus',
-  He = 'mdi:minus',
-  Le = { temperature: !1, state: !1 }
-function qe(e, t, i = {}) {
+})(Ie || (Ie = {}))
+const Me = Object.values(Ie),
+  Ue = [Ie.HVAC, Ie.PRESET],
+  Fe = 'hass:chevron-up',
+  He = 'hass:chevron-down',
+  Le = 'mdi:plus',
+  qe = 'mdi:minus',
+  Be = { temperature: !1, state: !1 }
+function De(e, t, i = {}) {
   return t[`${e}_modes`]
     .filter((e) =>
       (function (e, t) {
@@ -2582,10 +2592,10 @@ function qe(e, t, i = {}) {
     )
     .map((e) => {
       const t = 'object' == typeof i[e] ? i[e] : {}
-      return Object.assign({ icon: Te[e], value: e, name: e }, t)
+      return Object.assign({ icon: ze[e], value: e, name: e }, t)
     })
 }
-class Be extends ee {
+class We extends ee {
   constructor() {
     super(...arguments),
       (this.modes = []),
@@ -2596,8 +2606,8 @@ class Be extends ee {
       (this.stepSize = 0.5),
       (this._values = {}),
       (this._updatingValues = !1),
-      (this._hide = Le),
-      (this._debouncedSetTemperature = ye(
+      (this._hide = Be),
+      (this._debouncedSetTemperature = _e(
         (e) => {
           const { domain: t, service: i, data: n = {} } = this.service
           this._hass.callService(
@@ -2692,14 +2702,14 @@ class Be extends ee {
           'string' == typeof (null == e ? void 0 : e.name)
             ? e.name
             : !1 !== (null == e ? void 0 : e.name) && t.attributes.friendly_name
-        let s = t.attributes.hvac_action ? Ne : Te
+        let s = t.attributes.hvac_action ? Ae : ze
         return (
           void 0 !== (null == e ? void 0 : e.icon) && (s = e.icon),
           {
             name: n,
             icon: s,
-            toggle: (null == e ? void 0 : e.toggle) ? Ae(e.toggle, i) : null,
-            faults: ze(null == e ? void 0 : e.faults, i),
+            toggle: (null == e ? void 0 : e.toggle) ? Ve(e.toggle, i) : null,
+            faults: Re(null == e ? void 0 : e.faults, i),
           }
         )
       })(this.config.header, o, e)),
@@ -2752,9 +2762,9 @@ class Be extends ee {
     })(a, this._values)
       ? (this._updatingValues = !1)
       : this._updatingValues || (this._values = a)
-    const l = (e) => Re.includes(e) && r[`${e}_modes`],
+    const l = (e) => Me.includes(e) && r[`${e}_modes`],
       c = (e) =>
-        e.filter(l).map((e) => ({ type: e, hide_when_off: !1, list: qe(e, r) }))
+        e.filter(l).map((e) => ({ type: e, hide_when_off: !1, list: De(e, r) }))
     let d = []
     if (!1 === this.config.control) d = []
     else if (Array.isArray(this.config.control)) d = c(this.config.control)
@@ -2766,16 +2776,16 @@ class Be extends ee {
               .filter(([e]) => l(e))
               .map(([e, t]) => {
                 const { _name: i, _hide_when_off: n } = t,
-                  s = de(t, ['_name', '_hide_when_off'])
-                return { type: e, hide_when_off: n, name: i, list: qe(e, r, s) }
+                  s = ue(t, ['_name', '_hide_when_off'])
+                return { type: e, hide_when_off: n, name: i, list: De(e, r, s) }
               })
-          : c(Ie)
-    } else d = c(Ie)
+          : c(Ue)
+    } else d = c(Ue)
     if (
       ((this.modes = d.map((e) => {
-        if (e.type === Ve.HVAC) {
+        if (e.type === Ie.HVAC) {
           const t = [],
-            i = Object.values(Ee)
+            i = Object.values(Ne)
           return (
             e.list.forEach((e) => {
               const n = i.indexOf(e.value)
@@ -2845,7 +2855,7 @@ class Be extends ee {
         (this.sensors = this.config.sensors.map((t) => {
           var i,
             { name: n, entity: s, attribute: o, unit: r = '' } = t,
-            a = de(t, ['name', 'entity', 'attribute', 'unit'])
+            a = ue(t, ['name', 'entity', 'attribute', 'unit'])
           let l
           const c = [n]
           return (
@@ -2943,16 +2953,16 @@ class Be extends ee {
                     ui: m,
                     v: o,
                   })
-                xe.filters.define(
+                $e.filters.define(
                   'formatNumber',
-                  (e, t = { decimals: r.decimals }) => String(be(e, t))
+                  (e, t = { decimals: r.decimals }) => String(we(e, t))
                 ),
-                  xe.filters.define(
+                  $e.filters.define(
                     'relativetime',
                     (e, t = {}) =>
                       `<ha-relative-time fwd-datetime=${e} with-hass></ha-relative-time>`
                   ),
-                  xe.filters.define('translate', (e, t = '') =>
+                  $e.filters.define('translate', (e, t = '') =>
                     a(
                       e,
                       t || ('climate' !== p && 'humidifier' !== p)
@@ -2960,7 +2970,7 @@ class Be extends ee {
                         : `state_attributes.${p}.${e}`
                     )
                   )
-                const y = (e) => xe.render(e, v, { useWith: !0 }),
+                const y = (e) => $e.render(e, v, { useWith: !0 }),
                   b = y(i)
                 if (
                   !1 === n ||
@@ -2974,12 +2984,12 @@ class Be extends ee {
                       ? void 0
                       : d.labels)
                 )
-                  return I`<div class="sensor-value">${$e(b)}</div>`
+                  return I`<div class="sensor-value">${Pe(b)}</div>`
                 const _ = n || '{{friendly_name}}',
-                  w = _.match(/^(mdi|hass):.*/) ? Pe(_) : y(_)
-                return I`<div class="sensor-heading">${$e(
+                  w = _.match(/^(mdi|hass):.*/) ? Ce(_) : y(_)
+                return I`<div class="sensor-heading">${Pe(
                   w
-                )}</div><div class="sensor-value">${$e(b)}</div>`
+                )}</div><div class="sensor-value">${Pe(b)}</div>`
               })(
                 Object.assign(Object.assign({}, e), {
                   variables: this.config.variables,
@@ -2990,7 +3000,7 @@ class Be extends ee {
                 })
               )
             )),
-          (m = Oe(this.config, m)))
+          (m = Ee(this.config, m)))
         : (m = this.showSensors
             ? (function ({
                 _hide: e,
@@ -3027,12 +3037,12 @@ class Be extends ee {
                       r(m, 'state_attributes.climate.hvac_action.'),
                       ` (${b})`,
                     ].join('')),
-                  Oe(
+                  Ee(
                     o,
                     [
-                      Ce({
+                      je({
                         hide: e.temperature,
-                        state: `${be(v, o)}${i || ''}`,
+                        state: `${we(v, o)}${i || ''}`,
                         hass: n,
                         details: {
                           heading:
@@ -3047,7 +3057,7 @@ class Be extends ee {
                               : r('ui.card.climate.currently')),
                         },
                       }),
-                      Ce({
+                      je({
                         hide: e.state,
                         state: b,
                         hass: n,
@@ -3068,8 +3078,8 @@ class Be extends ee {
                       }),
                       ...(s.map((e) => {
                         var { name: t, state: i } = e,
-                          s = de(e, ['name', 'state'])
-                        return Ce({
+                          s = ue(e, ['name', 'state'])
+                        return je({
                           state: i,
                           hass: n,
                           localize: r,
@@ -3093,7 +3103,7 @@ class Be extends ee {
                 openEntityPopover: this.openEntityPopover,
               })
             : ''),
-      I`<ha-card class="${g.join(' ')}">${l} ${_e({
+      I`<ha-card class="${g.join(' ')}">${l} ${xe({
         header: this.header,
         toggleEntityChanged: this.toggleEntityChanged,
         entity: this.entity,
@@ -3103,23 +3113,23 @@ class Be extends ee {
           o = !1 !== u && s
         return I`<div class="current-wrapper ${p}"><ha-icon-button ?disabled="${
           null !== d && t >= d
-        }" class="thermostat-trigger" icon="${f ? Fe : Me}" @click="${() =>
+        }" class="thermostat-trigger" icon="${f ? Le : Fe}" @click="${() =>
           this.setTemperature(this.stepSize, e)}"><ha-icon .icon="${
-          f ? Fe : Me
+          f ? Le : Fe
         }"></ha-icon></ha-icon-button><h3 @click="${() =>
           this.openEntityPopover()}" class="current--value ${
           i ? 'updating' : v
-        }">${be(t, n)} ${
+        }">${we(t, n)} ${
           o ? I`<span class="current--unit">${u}</span>` : v
         }</h3><ha-icon-button ?disabled="${
           null !== c && t <= c
-        }" class="thermostat-trigger" icon="${f ? He : Ue}" @click="${() =>
+        }" class="thermostat-trigger" icon="${f ? qe : He}" @click="${() =>
           this.setTemperature(-this.stepSize, e)}"><ha-icon .icon="${
-          f ? He : Ue
+          f ? qe : He
         }"></ha-icon></ha-icon-button></div>`
       })}</section>${this.modes.map((e) => {
         var t, i, n
-        return je({
+        return Te({
           state: s.state,
           mode: e,
           localize: this.localize,
@@ -3146,7 +3156,7 @@ class Be extends ee {
       n = Number(i) + e,
       { decimals: s } = this.config
     ;(this._values = Object.assign(Object.assign({}, this._values), {
-      [t]: +be(n, { decimals: s }),
+      [t]: +we(n, { decimals: s }),
     })),
       this._debouncedSetTemperature(this._values)
   }
@@ -3172,18 +3182,18 @@ class Be extends ee {
           n
   }
 }
-he([Y()], Be.prototype, 'config', void 0),
-  he([Y()], Be.prototype, 'header', void 0),
-  he([Y()], Be.prototype, 'service', void 0),
-  he([Y()], Be.prototype, 'modes', void 0),
-  he([Y()], Be.prototype, 'entity', void 0),
-  he([Y()], Be.prototype, 'sensors', void 0),
-  he([Y()], Be.prototype, 'showSensors', void 0),
-  he([Y()], Be.prototype, 'name', void 0),
-  he([Y({ type: Object })], Be.prototype, '_values', void 0),
-  he([Y()], Be.prototype, '_updatingValues', void 0),
-  he([Y()], Be.prototype, '_hide', void 0),
-  customElements.define(e, Be),
+pe([Y()], We.prototype, 'config', void 0),
+  pe([Y()], We.prototype, 'header', void 0),
+  pe([Y()], We.prototype, 'service', void 0),
+  pe([Y()], We.prototype, 'modes', void 0),
+  pe([Y()], We.prototype, 'entity', void 0),
+  pe([Y()], We.prototype, 'sensors', void 0),
+  pe([Y()], We.prototype, 'showSensors', void 0),
+  pe([Y()], We.prototype, 'name', void 0),
+  pe([Y({ type: Object })], We.prototype, '_values', void 0),
+  pe([Y()], We.prototype, '_updatingValues', void 0),
+  pe([Y()], We.prototype, '_hide', void 0),
+  customElements.define(e, We),
   customElements.define(
     `${e}-editor`,
     class extends ee {
@@ -3194,10 +3204,10 @@ he([Y()], Be.prototype, 'config', void 0),
         return { hass: {}, config: {} }
       }
       static getStubConfig() {
-        return Object.assign({}, ce)
+        return Object.assign({}, de)
       }
       setConfig(e) {
-        this.config = e || Object.assign({}, ce)
+        this.config = e || Object.assign({}, de)
       }
       _openLink() {
         window.open(
@@ -3234,7 +3244,7 @@ he([Y()], Be.prototype, 'config', void 0),
               this.hass
             }" .value="${
               this.config.entity
-            }" .configValue="${'entity'}" .includeDomains="${le}" @change="${
+            }" .configValue="${'entity'}" .includeDomains="${ce}" @change="${
               this.valueChanged
             }" allow-custom-entity></ha-entity-picker></div><ha-formfield label="Show header?"><ha-switch .checked="${
               !1 !== this.config.header
@@ -3307,16 +3317,19 @@ he([Y()], Be.prototype, 'config', void 0),
                 : u.preset)
             }" .configValue="${'control.preset'}" @change="${
               this.valueChanged
-            }"></ha-switch></ha-formfield><div class="side-by-side"><ha-select label="Theme (optional)" .configValue="${'theme'}" .value="${
+            }"></ha-switch></ha-formfield><div class="side-by-side"><ha-select label="Theme" .value="${
               this.config.theme || 'standard'
-            }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${re.map(
-              (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
-            )}</ha-select><ha-select label="Control Style (optional)" .configValue="${'control_style'}" .value="${
+            }" @change="${(e) => this._selectChanged(e, 'theme')}" @closed="${(
+              e
+            ) =>
+              e.stopPropagation()}" .fixedMenuPosition="${!0}" class="dropdown">${ae.map(
+              (e) => I`<mwc-list-item .value="${e}">${e}</mwc-list-item>`
+            )}</ha-select><ha-select label="Control Style" .value="${
               this.config.control_style || 'classic'
-            }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${ae.map(
-              (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
+            }" @change="${(e) =>
+              this._selectChanged(e, 'control_style')}" @closed="${(e) =>
+              e.stopPropagation()}" .fixedMenuPosition="${!0}" class="dropdown">${le.map(
+              (e) => I`<mwc-list-item .value="${e}">${e}</mwc-list-item>`
             )}</ha-select></div>${
               !1 !== this.config.header
                 ? I`<div class="side-by-side"><ha-textfield label="Name (optional)" .value="${
@@ -3367,55 +3380,58 @@ he([Y()], Be.prototype, 'config', void 0),
               this.config.fallback || ''
             }" .configValue="${'fallback'}" @input="${
               this.valueChanged
-            }"></ha-textfield></div><div class="side-by-side"><ha-select label="Decimals (optional)" .configValue="${'decimals'}" .value="${String(
+            }"></ha-textfield></div><div class="side-by-side"><ha-select label="Decimals" .value="${String(
               null !== (w = this.config.decimals) && void 0 !== w ? w : 1
-            )}" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
-              ne
+            )}" @change="${(e) =>
+              this._selectChanged(e, 'decimals')}" @closed="${(e) =>
+              e.stopPropagation()}" .fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+              se
             ).map(
-              (e) => I`<mwc-list-item value="${String(e)}">${e}</mwc-list-item>`
+              (e) =>
+                I`<mwc-list-item .value="${String(e)}">${e}</mwc-list-item>`
             )}</ha-select><ha-textfield label="Unit (optional)" .value="${
               this.config.unit || ''
             }" .configValue="${'unit'}" @input="${
               this.valueChanged
-            }"></ha-textfield></div><div class="side-by-side"><ha-select label="Step Layout (optional)" .configValue="${'layout.step'}" .value="${
+            }"></ha-textfield></div><div class="side-by-side"><ha-select label="Step Layout" .value="${
               (null === (x = this.config.layout) || void 0 === x
                 ? void 0
                 : x.step) || 'column'
-            }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+            }" @change="${(e) =>
+              this._selectChanged(e, 'layout.step')}" @closed="${(e) =>
+              e.stopPropagation()}" .fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+              re
+            ).map(
+              (e) => I`<mwc-list-item .value="${e}">${e}</mwc-list-item>`
+            )}</ha-select><ha-select label="Step Size" .value="${String(
+              null !== (S = this.config.step_size) && void 0 !== S ? S : 0.5
+            )}" @change="${(e) =>
+              this._selectChanged(e, 'step_size')}" @closed="${(e) =>
+              e.stopPropagation()}" .fixedMenuPosition="${!0}" class="dropdown">${Object.values(
               oe
             ).map(
-              (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
-            )}</ha-select><ha-select label="Step Size (optional)" .configValue="${'step_size'}" .value="${String(
-              null !== (S = this.config.step_size) && void 0 !== S ? S : 0.5
-            )}" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
-              se
-            ).map(
-              (e) => I`<mwc-list-item value="${String(e)}">${e}</mwc-list-item>`
+              (e) =>
+                I`<mwc-list-item .value="${String(e)}">${e}</mwc-list-item>`
             )}</ha-select></div><div class="side-by-side"><mwc-button @click="${
               this._openLink
             }">Configuration Options</mwc-button>Settings for label, control, sensors, faults and hiding UI elements can only be configured in the code editor</div></div></div>`
           : I``
       }
+      _selectChanged(e, t) {
+        if (!this.config || !this.hass) return
+        const i = e.target.value
+        if (null == i) return
+        const n = he(this.config)
+        ne(n, t, i), ie(this, 'config-changed', { config: n })
+      }
       valueChanged(e) {
         if (!this.config || !this.hass) return
         const t = e.currentTarget || e.target,
-          i = ((n = this.config), JSON.parse(JSON.stringify(n)))
-        var n
+          i = he(this.config)
         t.configValue &&
           ('' === t.value
             ? delete i[t.configValue]
-            : (function (e, t, i) {
-                const n = t.split('.')
-                let s = e
-                for (; n.length - 1; ) {
-                  var o = n.shift()
-                  s.hasOwnProperty(o) || (s[o] = {}), (s = s[o])
-                }
-                s[n[0]] = i
-              })(i, t.configValue, void 0 !== t.checked ? t.checked : t.value)),
+            : ne(i, t.configValue, void 0 !== t.checked ? t.checked : t.value)),
           ie(this, 'config-changed', { config: i })
       }
       toggleHeader(e) {
