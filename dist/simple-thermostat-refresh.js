@@ -298,7 +298,7 @@ class k {
     this.value !== m && this.committer.commit()
   }
 }
-class O {
+class P {
   constructor(e) {
     ;(this.value = void 0), (this.__pendingValue = void 0), (this.options = e)
   }
@@ -371,7 +371,7 @@ class O {
     for (const s of e)
       (i = t[n]),
         void 0 === i &&
-          ((i = new O(this.options)),
+          ((i = new P(this.options)),
           t.push(i),
           0 === n ? i.appendIntoPart(this) : i.insertAfterPart(t[n - 1])),
         i.setValue(s),
@@ -383,7 +383,7 @@ class O {
     i(this.startNode.parentNode, e.nextSibling, this.endNode)
   }
 }
-class P {
+class O {
   constructor(e, t, i) {
     if (
       ((this.value = void 0),
@@ -516,27 +516,27 @@ const R = new (class {
       return new C(e, t.slice(1), i).parts
     }
     if ('@' === s) return [new N(e, t.slice(1), n.eventContext)]
-    if ('?' === s) return [new P(e, t.slice(1), i)]
+    if ('?' === s) return [new O(e, t.slice(1), i)]
     return new $(e, t, i).parts
   }
   handleTextExpression(e) {
-    return new O(e)
+    return new P(e)
   }
 })()
 'undefined' != typeof window &&
   (window.litHtmlVersions || (window.litHtmlVersions = [])).push('1.3.0')
 const I = (e, ...t) => new w(e, t, 'html', R),
-  U = (e, t) => `${e}--${t}`
-let F = !0
+  M = (e, t) => `${e}--${t}`
+let U = !0
 void 0 === window.ShadyCSS
-  ? (F = !1)
+  ? (U = !1)
   : void 0 === window.ShadyCSS.prepareTemplateDom &&
     (console.warn(
       'Incompatible ShadyCSS version detected. Please update to at least @webcomponents/webcomponentsjs@2.0.2 and @webcomponents/shadycss@1.3.1.'
     ),
-    (F = !1))
-const M = (e) => (t) => {
-    const i = U(t.type, e)
+    (U = !1))
+const F = (e) => (t) => {
+    const i = M(t.type, e)
     let s = z.get(i)
     void 0 === s &&
       ((s = { stringsArray: new WeakMap(), keyString: new Map() }), z.set(i, s))
@@ -545,7 +545,7 @@ const M = (e) => (t) => {
     const a = t.strings.join(n)
     if (((o = s.keyString.get(a)), void 0 === o)) {
       const i = t.getTemplateElement()
-      F && window.ShadyCSS.prepareTemplateDom(i, e),
+      U && window.ShadyCSS.prepareTemplateDom(i, e),
         (o = new r(t, i)),
         s.keyString.set(a, o)
     }
@@ -566,7 +566,7 @@ const M = (e) => (t) => {
     }
     ;((e) => {
       H.forEach((t) => {
-        const i = z.get(U(t, e))
+        const i = z.get(M(t, e))
         void 0 !== i &&
           i.keyString.forEach((e) => {
             const {
@@ -1014,7 +1014,7 @@ class ee extends J {
       throw new Error('The `scopeName` option is required.')
     const s = n.scopeName,
       o = V.has(t),
-      r = F && 11 === t.nodeType && !!t.host,
+      r = U && 11 === t.nodeType && !!t.host,
       a = r && !L.has(s),
       l = a ? document.createDocumentFragment() : t
     if (
@@ -1022,11 +1022,11 @@ class ee extends J {
         let s = V.get(t)
         void 0 === s &&
           (i(t, t.firstChild),
-          V.set(t, (s = new O(Object.assign({ templateFactory: A }, n)))),
+          V.set(t, (s = new P(Object.assign({ templateFactory: A }, n)))),
           s.appendInto(t)),
           s.setValue(e),
           s.commit()
-      })(e, l, Object.assign({ templateFactory: M(s) }, n)),
+      })(e, l, Object.assign({ templateFactory: F(s) }, n)),
       a)
     ) {
       const e = V.get(l)
@@ -1596,7 +1596,10 @@ ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
   flex: 1;
 }
 
-.overall-config > ha-formfield { display: block; margin-bottom: 8px; }
+.overall-config > ha-formfield {
+  display: block;
+  margin-bottom: 8px;
+}
 `
 function ie(e, t, i, n = {}) {
   ;(n = n || {}), (i = null == i ? {} : i)
@@ -2024,8 +2027,8 @@ var we,
                   (d = x),
                   (u = [])
               } else if ('s' === S) {
-                var O = x.n || ''
-                n.async && a.test(O) && ((x.a = !0), (x.n = O.replace(a, ''))),
+                var P = x.n || ''
+                n.async && a.test(P) && ((x.a = !0), (x.n = P.replace(a, ''))),
                   u.push(x)
               } else u.push(x)
             }
@@ -2229,7 +2232,7 @@ var we,
               return w('useScope', t, !1), e.exec(e.params[0])
             },
           }),
-          O = new _({
+          P = new _({
             if: function (e, t) {
               w('if', !1, e.f, !0)
               var i = 'if(' + e.p + '){' + b(e.d, t) + '}'
@@ -2277,7 +2280,7 @@ var we,
               )
             },
           }),
-          P = new _({
+          O = new _({
             e: function (e) {
               var t = String(e)
               return /[&<>"']/.test(t) ? t.replace(/[&<>"']/g, S) : t
@@ -2302,7 +2305,7 @@ var we,
               }
             },
             async: !1,
-            storage: { helpers: k, nativeHelpers: O, filters: P, templates: $ },
+            storage: { helpers: k, nativeHelpers: P, filters: O, templates: $ },
             prefixes: { h: '@', b: '#', i: '', r: '*', c: '/', e: '!' },
             cache: !1,
             plugins: [],
@@ -2348,10 +2351,10 @@ var we,
           (e.compileScopeIntoFunction = y),
           (e.compileToString = f),
           (e.defaultConfig = C),
-          (e.filters = P),
+          (e.filters = O),
           (e.getConfig = E),
           (e.helpers = k),
-          (e.nativeHelpers = O),
+          (e.nativeHelpers = P),
           (e.parse = p),
           (e.render = function (e, i, s, o) {
             var r = E(s || {})
@@ -2383,7 +2386,7 @@ var we,
 const Se = new WeakMap(),
   $e =
     ((ke = (e) => (t) => {
-      if (!(t instanceof O))
+      if (!(t instanceof P))
         throw new Error('unsafeHTML can only be used in text bindings')
       const i = Se.get(t)
       if (void 0 !== i && x(e) && e === i.value && t.value === i.fragment)
@@ -2398,8 +2401,8 @@ const Se = new WeakMap(),
       return f.set(t, !0), t
     })
 var ke
-const Oe = (e) => `<ha-icon icon="${e}"></ha-icon>`
-function Pe(e, t) {
+const Pe = (e) => `<ha-icon icon="${e}"></ha-icon>`
+function Oe(e, t) {
   var i, n
   const { type: s, labels: o } =
     null !==
@@ -2485,7 +2488,7 @@ function je({ state: e, mode: t, modeOptions: i, localize: n, setMode: s }) {
   )}</div>`
 }
 ;(xe.defaultConfig.autoEscape = !1),
-  xe.filters.define('icon', Oe),
+  xe.filters.define('icon', Pe),
   xe.filters.define('join', (e, t = ', ') => e.join(t)),
   xe.filters.define(
     'css',
@@ -2563,9 +2566,9 @@ var Ve
 })(Ve || (Ve = {}))
 const Re = Object.values(Ve),
   Ie = [Ve.HVAC, Ve.PRESET],
-  Ue = 'hass:chevron-up',
-  Fe = 'hass:chevron-down',
-  Me = 'mdi:plus',
+  Me = 'hass:chevron-up',
+  Ue = 'hass:chevron-down',
+  Fe = 'mdi:plus',
   He = 'mdi:minus',
   Le = { temperature: !1, state: !1 }
 function qe(e, t, i = {}) {
@@ -2973,7 +2976,7 @@ class Be extends ee {
                 )
                   return I`<div class="sensor-value">${$e(b)}</div>`
                 const _ = n || '{{friendly_name}}',
-                  w = _.match(/^(mdi|hass):.*/) ? Oe(_) : y(_)
+                  w = _.match(/^(mdi|hass):.*/) ? Pe(_) : y(_)
                 return I`<div class="sensor-heading">${$e(
                   w
                 )}</div><div class="sensor-value">${$e(b)}</div>`
@@ -2987,7 +2990,7 @@ class Be extends ee {
                 })
               )
             )),
-          (m = Pe(this.config, m)))
+          (m = Oe(this.config, m)))
         : (m = this.showSensors
             ? (function ({
                 _hide: e,
@@ -3024,7 +3027,7 @@ class Be extends ee {
                       r(m, 'state_attributes.climate.hvac_action.'),
                       ` (${b})`,
                     ].join('')),
-                  Pe(
+                  Oe(
                     o,
                     [
                       Ce({
@@ -3100,9 +3103,9 @@ class Be extends ee {
           o = !1 !== u && s
         return I`<div class="current-wrapper ${p}"><ha-icon-button ?disabled="${
           null !== d && t >= d
-        }" class="thermostat-trigger" icon="${f ? Me : Ue}" @click="${() =>
+        }" class="thermostat-trigger" icon="${f ? Fe : Me}" @click="${() =>
           this.setTemperature(this.stepSize, e)}"><ha-icon .icon="${
-          f ? Me : Ue
+          f ? Fe : Me
         }"></ha-icon></ha-icon-button><h3 @click="${() =>
           this.openEntityPopover()}" class="current--value ${
           i ? 'updating' : v
@@ -3110,9 +3113,9 @@ class Be extends ee {
           o ? I`<span class="current--unit">${u}</span>` : v
         }</h3><ha-icon-button ?disabled="${
           null !== c && t <= c
-        }" class="thermostat-trigger" icon="${f ? He : Fe}" @click="${() =>
+        }" class="thermostat-trigger" icon="${f ? He : Ue}" @click="${() =>
           this.setTemperature(-this.stepSize, e)}"><ha-icon .icon="${
-          f ? He : Fe
+          f ? He : Ue
         }"></ha-icon></ha-icon-button></div>`
       })}</section>${this.modes.map((e) => {
         var t, i, n
@@ -3307,12 +3310,12 @@ he([Y()], Be.prototype, 'config', void 0),
             }"></ha-switch></ha-formfield><div class="side-by-side"><ha-select label="Theme (optional)" .configValue="${'theme'}" .value="${
               this.config.theme || 'standard'
             }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" class="dropdown">${re.map(
+              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${re.map(
               (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
             )}</ha-select><ha-select label="Control Style (optional)" .configValue="${'control_style'}" .value="${
               this.config.control_style || 'classic'
             }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" class="dropdown">${ae.map(
+              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${ae.map(
               (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
             )}</ha-select></div>${
               !1 !== this.config.header
@@ -3367,7 +3370,9 @@ he([Y()], Be.prototype, 'config', void 0),
             }"></ha-textfield></div><div class="side-by-side"><ha-select label="Decimals (optional)" .configValue="${'decimals'}" .value="${String(
               null !== (w = this.config.decimals) && void 0 !== w ? w : 1
             )}" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" class="dropdown">${Object.values(ne).map(
+              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+              ne
+            ).map(
               (e) => I`<mwc-list-item value="${String(e)}">${e}</mwc-list-item>`
             )}</ha-select><ha-textfield label="Unit (optional)" .value="${
               this.config.unit || ''
@@ -3378,12 +3383,16 @@ he([Y()], Be.prototype, 'config', void 0),
                 ? void 0
                 : x.step) || 'column'
             }" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" class="dropdown">${Object.values(oe).map(
+              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+              oe
+            ).map(
               (e) => I`<mwc-list-item value="${e}">${e}</mwc-list-item>`
             )}</ha-select><ha-select label="Step Size (optional)" .configValue="${'step_size'}" .value="${String(
               null !== (S = this.config.step_size) && void 0 !== S ? S : 0.5
             )}" @selected="${this.valueChanged}" @closed="${(e) =>
-              e.stopPropagation()}" class="dropdown">${Object.values(se).map(
+              e.stopPropagation()}" fixedMenuPosition="${!0}" class="dropdown">${Object.values(
+              se
+            ).map(
               (e) => I`<mwc-list-item value="${String(e)}">${e}</mwc-list-item>`
             )}</ha-select></div><div class="side-by-side"><mwc-button @click="${
               this._openLink
@@ -3392,7 +3401,7 @@ he([Y()], Be.prototype, 'config', void 0),
       }
       valueChanged(e) {
         if (!this.config || !this.hass) return
-        const { target: t } = e,
+        const t = e.currentTarget || e.target,
           i = ((n = this.config), JSON.parse(JSON.stringify(n)))
         var n
         t.configValue &&

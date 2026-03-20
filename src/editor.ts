@@ -133,6 +133,7 @@ export default class SimpleThermostatEditor extends LitElement {
               .value=${this.config.theme || 'standard'}
               @selected=${this.valueChanged}
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${OptionsThemes.map(
@@ -147,6 +148,7 @@ export default class SimpleThermostatEditor extends LitElement {
               .value=${this.config.control_style || 'classic'}
               @selected=${this.valueChanged}
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${OptionsControlStyles.map(
@@ -210,6 +212,7 @@ export default class SimpleThermostatEditor extends LitElement {
               .value=${String(this.config.decimals ?? 1)}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsDecimals).map(
@@ -235,6 +238,7 @@ export default class SimpleThermostatEditor extends LitElement {
               .value=${this.config.layout?.step || 'column'}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsStepLayout).map(
@@ -249,6 +253,7 @@ export default class SimpleThermostatEditor extends LitElement {
               .value=${String(this.config.step_size ?? 0.5)}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsStepSize).map(
@@ -277,7 +282,7 @@ export default class SimpleThermostatEditor extends LitElement {
     if (!this.config || !this.hass) {
       return
     }
-    const { target } = ev
+    const target = ev.currentTarget || ev.target
     const copy = cloneDeep(this.config)
     if (target.configValue) {
       if (target.value === '') {

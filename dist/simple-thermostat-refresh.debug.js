@@ -3374,6 +3374,7 @@ class SimpleThermostatEditor extends LitElement {
               .value=${this.config.theme || 'standard'}
               @selected=${this.valueChanged}
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${OptionsThemes.map(
@@ -3388,6 +3389,7 @@ class SimpleThermostatEditor extends LitElement {
               .value=${this.config.control_style || 'classic'}
               @selected=${this.valueChanged}
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${OptionsControlStyles.map(
@@ -3475,13 +3477,13 @@ class SimpleThermostatEditor extends LitElement {
               )}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsDecimals).map(
-                (item) =>
-                  html`<mwc-list-item value=${String(item)}
-                    >${item}</mwc-list-item
-                  >`
+                (item) => html`<mwc-list-item value=${String(item)}
+                  >${item}</mwc-list-item
+                >`
               )}
             </ha-select>
 
@@ -3502,6 +3504,7 @@ class SimpleThermostatEditor extends LitElement {
                 : _y.step) || 'column'}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsStepLayout).map(
@@ -3520,13 +3523,13 @@ class SimpleThermostatEditor extends LitElement {
               )}
               @selected="${this.valueChanged}"
               @closed=${(e) => e.stopPropagation()}
+              fixedMenuPosition=${true}
               class="dropdown"
             >
               ${Object.values(OptionsStepSize).map(
-                (item) =>
-                  html`<mwc-list-item value=${String(item)}
-                    >${item}</mwc-list-item
-                  >`
+                (item) => html`<mwc-list-item value=${String(item)}
+                  >${item}</mwc-list-item
+                >`
               )}
             </ha-select>
           </div>
@@ -3547,7 +3550,7 @@ class SimpleThermostatEditor extends LitElement {
     if (!this.config || !this.hass) {
       return
     }
-    const { target } = ev
+    const target = ev.currentTarget || ev.target
     const copy = cloneDeep(this.config)
     if (target.configValue) {
       if (target.value === '') {
