@@ -474,3 +474,27 @@ ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
   border-bottom-left-radius: 100px;
   border-bottom-right-radius: 100px;
 }
+
+/* Editor Styles */
+.card-config {
+  display: flex;
+  flex-direction: column;
+}
+.overall-config {
+  margin-bottom: 20px;
+}
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.side-by-side > * {
+  flex: 1;
+}
+
+.overall-config > ha-formfield {
+  display: block;
+  margin-bottom: 8px;
+}

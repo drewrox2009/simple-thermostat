@@ -127,56 +127,48 @@ export default class SimpleThermostatEditor extends LitElement {
           </ha-formfield>
 
           <div class="side-by-side">
-            <paper-dropdown-menu
+            <ha-select
               label="Theme (optional)"
               .configValue=${'theme'}
-              @value-changed="${this.valueChanged}"
+              .value=${this.config.theme || 'standard'}
+              @selected=${this.valueChanged}
+              @closed=${(e) => e.stopPropagation()}
               class="dropdown"
             >
-              <paper-listbox
-                slot="dropdown-content"
-                .selected=${this.config.theme
-                  ? OptionsThemes.indexOf(this.config.theme)
-                  : 1}
-              >
-                ${OptionsThemes.map(
-                  (item) => html` <paper-item>${item}</paper-item> `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
+              ${OptionsThemes.map(
+                (item) =>
+                  html`<mwc-list-item value=${item}>${item}</mwc-list-item>`
+              )}
+            </ha-select>
 
-            <paper-dropdown-menu
+            <ha-select
               label="Control Style (optional)"
               .configValue=${'control_style'}
-              @value-changed="${this.valueChanged}"
+              .value=${this.config.control_style || 'classic'}
+              @selected=${this.valueChanged}
+              @closed=${(e) => e.stopPropagation()}
               class="dropdown"
             >
-              <paper-listbox
-                slot="dropdown-content"
-                .selected=${this.config.control_style
-                  ? OptionsControlStyles.indexOf(this.config.control_style)
-                  : 0}
-              >
-                ${OptionsControlStyles.map(
-                  (item) => html` <paper-item>${item}</paper-item> `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
+              ${OptionsControlStyles.map(
+                (item) =>
+                  html`<mwc-list-item value=${item}>${item}</mwc-list-item>`
+              )}
+            </ha-select>
           </div>
 
           ${this.config.header !== false
             ? html`
                 <div class="side-by-side">
-                  <paper-input
+                  <ha-textfield
                     label="Name (optional)"
-                    .value="${this.config.header?.name}"
+                    .value="${this.config.header?.name || ''}"
                     .configValue="${'header.name'}"
-                    @value-changed="${this.valueChanged}"
-                  ></paper-input>
+                    @input="${this.valueChanged}"
+                  ></ha-textfield>
 
                   <ha-icon-input
                     label="Icon (optional)"
-                    .value="${this.config.header?.icon}"
+                    .value="${this.config.header?.icon || ''}"
                     .configValue=${'header.icon'}
                     @value-changed=${this.valueChanged}
                   ></ha-icon-input>
@@ -192,88 +184,80 @@ export default class SimpleThermostatEditor extends LitElement {
                     allow-custom-entity
                   ></ha-entity-picker>
 
-                  <paper-input
+                  <ha-textfield
                     label="Toggle entity label"
-                    .value="${this.config?.header?.toggle?.name}"
+                    .value="${this.config?.header?.toggle?.name || ''}"
                     .configValue="${'header.toggle.name'}"
-                    @value-changed="${this.valueChanged}"
-                  ></paper-input>
+                    @input="${this.valueChanged}"
+                  ></ha-textfield>
                 </div>
               `
             : ''}
 
           <div class="side-by-side">
-            <paper-input
+            <ha-textfield
               label="Fallback Text (optional)"
-              .value="${this.config.fallback}"
+              .value="${this.config.fallback || ''}"
               .configValue="${'fallback'}"
-              @value-changed="${this.valueChanged}"
-            ></paper-input>
+              @input="${this.valueChanged}"
+            ></ha-textfield>
           </div>
 
           <div class="side-by-side">
-            <paper-dropdown-menu
+            <ha-select
               label="Decimals (optional)"
               .configValue=${'decimals'}
-              @value-changed="${this.valueChanged}"
+              .value=${String(this.config.decimals ?? 1)}
+              @selected="${this.valueChanged}"
+              @closed=${(e) => e.stopPropagation()}
               class="dropdown"
             >
-              <paper-listbox
-                slot="dropdown-content"
-                .selected=${Object.values(OptionsDecimals).indexOf(
-                  +this.config.decimals
-                )}
-              >
-                ${Object.values(OptionsDecimals).map(
-                  (item) => html` <paper-item>${item}</paper-item> `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
+              ${Object.values(OptionsDecimals).map(
+                (item) =>
+                  html`<mwc-list-item value=${String(item)}
+                    >${item}</mwc-list-item
+                  >`
+              )}
+            </ha-select>
 
-            <paper-input
+            <ha-textfield
               label="Unit (optional)"
-              .value="${this.config.unit}"
+              .value="${this.config.unit || ''}"
               .configValue="${'unit'}"
-              @value-changed="${this.valueChanged}"
-            ></paper-input>
+              @input="${this.valueChanged}"
+            ></ha-textfield>
           </div>
 
           <div class="side-by-side">
-            <paper-dropdown-menu
+            <ha-select
               label="Step Layout (optional)"
               .configValue=${'layout.step'}
-              @value-changed="${this.valueChanged}"
+              .value=${this.config.layout?.step || 'column'}
+              @selected="${this.valueChanged}"
+              @closed=${(e) => e.stopPropagation()}
               class="dropdown"
             >
-              <paper-listbox
-                slot="dropdown-content"
-                .selected=${Object.values(OptionsStepLayout).indexOf(
-                  this.config.layout?.step
-                )}
-              >
-                ${Object.values(OptionsStepLayout).map(
-                  (item) => html` <paper-item>${item}</paper-item> `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
+              ${Object.values(OptionsStepLayout).map(
+                (item) =>
+                  html`<mwc-list-item value=${item}>${item}</mwc-list-item>`
+              )}
+            </ha-select>
 
-            <paper-dropdown-menu
+            <ha-select
               label="Step Size (optional)"
               .configValue=${'step_size'}
-              @value-changed="${this.valueChanged}"
+              .value=${String(this.config.step_size ?? 0.5)}
+              @selected="${this.valueChanged}"
+              @closed=${(e) => e.stopPropagation()}
               class="dropdown"
             >
-              <paper-listbox
-                slot="dropdown-content"
-                .selected=${Object.values(OptionsStepSize).indexOf(
-                  +this.config.step_size
-                )}
-              >
-                ${Object.values(OptionsStepSize).map(
-                  (item) => html` <paper-item>${item}</paper-item> `
-                )}
-              </paper-listbox>
-            </paper-dropdown-menu>
+              ${Object.values(OptionsStepSize).map(
+                (item) =>
+                  html`<mwc-list-item value=${String(item)}
+                    >${item}</mwc-list-item
+                  >`
+              )}
+            </ha-select>
           </div>
 
           <div class="side-by-side">
