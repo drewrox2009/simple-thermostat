@@ -2750,7 +2750,11 @@ class SimpleThermostatEditor extends LitElement {
       _t,
       _u,
       _v,
-      _w
+      _w,
+      _x,
+      _y,
+      _z,
+      _0
     if (!this.hass) return html``
     return html`
       <div class="card-config">
@@ -2775,71 +2779,95 @@ class SimpleThermostatEditor extends LitElement {
               @change=${this.toggleHeader}
             ></ha-switch>
           </ha-formfield>
+          <ha-formfield label="Show current temperature?">
+            <ha-switch
+              .checked=${((_b =
+                (_a = this.config) === null || _a === void 0
+                  ? void 0
+                  : _a.hide) === null || _b === void 0
+                ? void 0
+                : _b.temperature) !== true}
+              .configValue="${'hide.temperature'}"
+              @change=${this._invertedToggleChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show state?">
+            <ha-switch
+              .checked=${((_d =
+                (_c = this.config) === null || _c === void 0
+                  ? void 0
+                  : _c.hide) === null || _d === void 0
+                ? void 0
+                : _d.state) !== true}
+              .configValue="${'hide.state'}"
+              @change=${this._invertedToggleChanged}
+            ></ha-switch>
+          </ha-formfield>
           <ha-formfield label="Show mode names?">
             <ha-switch
-              .checked=${((_c =
-                (_b =
-                  (_a = this.config) === null || _a === void 0
+              .checked=${((_g =
+                (_f =
+                  (_e = this.config) === null || _e === void 0
                     ? void 0
-                    : _a.layout) === null || _b === void 0
+                    : _e.layout) === null || _f === void 0
                   ? void 0
-                  : _b.mode) === null || _c === void 0
+                  : _f.mode) === null || _g === void 0
                 ? void 0
-                : _c.names) !== false}
+                : _g.names) !== false}
               .configValue="${'layout.mode.names'}"
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
           <ha-formfield label="Show mode icons?">
             <ha-switch
-              .checked=${((_f =
-                (_e =
-                  (_d = this.config) === null || _d === void 0
+              .checked=${((_k =
+                (_j =
+                  (_h = this.config) === null || _h === void 0
                     ? void 0
-                    : _d.layout) === null || _e === void 0
+                    : _h.layout) === null || _j === void 0
                   ? void 0
-                  : _e.mode) === null || _f === void 0
+                  : _j.mode) === null || _k === void 0
                 ? void 0
-                : _f.icons) !== false}
+                : _k.icons) !== false}
               .configValue="${'layout.mode.icons'}"
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
           <ha-formfield label="Show mode headings?">
             <ha-switch
-              .checked=${((_j =
-                (_h =
-                  (_g = this.config) === null || _g === void 0
+              .checked=${((_o =
+                (_m =
+                  (_l = this.config) === null || _l === void 0
                     ? void 0
-                    : _g.layout) === null || _h === void 0
+                    : _l.layout) === null || _m === void 0
                   ? void 0
-                  : _h.mode) === null || _j === void 0
+                  : _m.mode) === null || _o === void 0
                 ? void 0
-                : _j.headings) !== false}
+                : _o.headings) !== false}
               .configValue="${'layout.mode.headings'}"
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
           <ha-formfield label="Show HVAC modes?">
             <ha-switch
-              .checked=${((_l =
-                (_k = this.config) === null || _k === void 0
+              .checked=${((_q =
+                (_p = this.config) === null || _p === void 0
                   ? void 0
-                  : _k.control) === null || _l === void 0
+                  : _p.control) === null || _q === void 0
                 ? void 0
-                : _l.hvac) !== false}
+                : _q.hvac) !== false}
               .configValue="${'control.hvac'}"
               @change=${this.valueChanged}
             ></ha-switch>
           </ha-formfield>
           <ha-formfield label="Show preset modes?">
             <ha-switch
-              .checked=${((_o =
-                (_m = this.config) === null || _m === void 0
+              .checked=${((_s =
+                (_r = this.config) === null || _r === void 0
                   ? void 0
-                  : _m.control) === null || _o === void 0
+                  : _r.control) === null || _s === void 0
                 ? void 0
-                : _o.preset) !== false}
+                : _s.preset) !== false}
               .configValue="${'control.preset'}"
               @change=${this.valueChanged}
             ></ha-switch>
@@ -2892,20 +2920,20 @@ class SimpleThermostatEditor extends LitElement {
                 <div class="row">
                   <ha-textfield
                     label="Name (optional)"
-                    .value="${((_p = this.config.header) === null ||
-                    _p === void 0
+                    .value="${((_t = this.config.header) === null ||
+                    _t === void 0
                       ? void 0
-                      : _p.name) || ''}"
+                      : _t.name) || ''}"
                     .configValue="${'header.name'}"
                     @input="${this.valueChanged}"
                   ></ha-textfield>
 
                   <ha-icon-input
                     label="Icon (optional)"
-                    .value="${((_q = this.config.header) === null ||
-                    _q === void 0
+                    .value="${((_u = this.config.header) === null ||
+                    _u === void 0
                       ? void 0
-                      : _q.icon) || ''}"
+                      : _u.icon) || ''}"
                     .configValue=${'header.icon'}
                     @value-changed=${this.valueChanged}
                   ></ha-icon-input>
@@ -2915,15 +2943,15 @@ class SimpleThermostatEditor extends LitElement {
                   <ha-entity-picker
                     label="Toggle Entity (optional)"
                     .hass=${this.hass}
-                    .value="${(_t =
-                      (_s =
-                        (_r = this.config) === null || _r === void 0
+                    .value="${(_x =
+                      (_w =
+                        (_v = this.config) === null || _v === void 0
                           ? void 0
-                          : _r.header) === null || _s === void 0
+                          : _v.header) === null || _w === void 0
                         ? void 0
-                        : _s.toggle) === null || _t === void 0
+                        : _w.toggle) === null || _x === void 0
                       ? void 0
-                      : _t.entity}"
+                      : _x.entity}"
                     .configValue=${'header.toggle.entity'}
                     @change="${this.valueChanged}"
                     allow-custom-entity
@@ -2931,15 +2959,15 @@ class SimpleThermostatEditor extends LitElement {
 
                   <ha-textfield
                     label="Toggle entity label"
-                    .value="${((_w =
-                      (_v =
-                        (_u = this.config) === null || _u === void 0
+                    .value="${((_0 =
+                      (_z =
+                        (_y = this.config) === null || _y === void 0
                           ? void 0
-                          : _u.header) === null || _v === void 0
+                          : _y.header) === null || _z === void 0
                         ? void 0
-                        : _v.toggle) === null || _w === void 0
+                        : _z.toggle) === null || _0 === void 0
                       ? void 0
-                      : _w.name) || ''}"
+                      : _0.name) || ''}"
                     .configValue="${'header.toggle.name'}"
                     @input="${this.valueChanged}"
                   ></ha-textfield>
@@ -3082,6 +3110,21 @@ class SimpleThermostatEditor extends LitElement {
   toggleHeader(ev) {
     this.config.header = ev.target.checked ? {} : false
     fireEvent(this, 'config-changed', { config: this.config })
+  }
+  /**
+   * Inverted toggle for "hide" config paths.
+   * Switch ON = don't hide (remove/set false), Switch OFF = hide (set true).
+   */
+  _invertedToggleChanged(ev) {
+    if (!this.config || !this.hass) return
+    const target = ev.currentTarget || ev.target
+    const copy = cloneDeep(this.config)
+    if (target.configValue) {
+      // Inverted: checked=true means DON'T hide, so set to false
+      // checked=false means DO hide, so set to true
+      setValue(copy, target.configValue, !target.checked)
+    }
+    fireEvent(this, 'config-changed', { config: copy })
   }
 }
 
@@ -3664,202 +3707,248 @@ var css_248z = css`
  */
 
   ha-card.modern {
-    background: rgba(20, 20, 20, 0.4);
-    background: var(--st-modern-bg, rgba(20, 20, 20, 0.4));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    background: rgba(30, 30, 40, 0.55);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
     color: #ffffff;
     padding: 24px;
+    overflow: visible;
+  }
+
+  ha-card.modern .header {
+    padding-bottom: 8px;
   }
 
   ha-card.modern .header__title,
   ha-card.modern .header__icon {
     color: #ffffff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     font-weight: 600;
   }
 
   ha-card.modern .body {
-    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0;
   }
 
+  /* Sensors in modern theme */
   ha-card.modern .sensors {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
     grid-gap: 12px;
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 8px;
     grid-template-columns: unset;
+    width: 100%;
   }
 
-  ha-card.modern .sensor-heading,
-  ha-card.modern .sensor-value {
-    color: rgba(255, 255, 255, 0.7);
-    display: block;
-    font-size: 13px;
+  ha-card.modern .sensor-heading {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-weight: 400;
     padding: 0;
     margin: 0;
-    justify-content: center;
   }
   ha-card.modern .sensor-value {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+    margin: 2px 0 0 0;
+  }
+
+  /* 
+ * Temperature Controls - Classic Style (Large Glowing Arrows)
+ */
+  ha-card.modern .current-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+    grid-gap: 0;
+    gap: 0;
+  }
+
+  ha-card.modern .current--value {
     color: #ffffff;
-    font-weight: 500;
-    margin-top: 4px;
+    font-size: 64px;
+    font-weight: 300;
+    line-height: 1;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    margin: 8px 0;
+    letter-spacing: -2px;
   }
 
-  ha-card.modern .sensor-item {
-    /* Assuming we wrap infoItems in this if needed, else we target their layout */
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 8px 16px;
-    text-align: center;
+  ha-card.modern .thermostat-trigger {
+    color: rgba(80, 180, 255, 0.8);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 4px;
+    transition: all 0.25s ease;
+    --mdc-icon-size: 48px;
   }
 
-  /* Mode Buttons / Bottom Bar */
+  ha-card.modern .thermostat-trigger ha-icon {
+    --mdc-icon-size: 48px;
+    filter: drop-shadow(0 0 8px rgba(80, 180, 255, 0.5));
+  }
+
+  ha-card.modern .thermostat-trigger:hover {
+    color: rgba(100, 200, 255, 1);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    transform: scale(1.15);
+  }
+
+  ha-card.modern .thermostat-trigger:hover ha-icon {
+    filter: drop-shadow(0 0 16px rgba(80, 180, 255, 0.8));
+  }
+
+  /* Mode Buttons - Glass Pill Container */
   ha-card.modern .modes {
     display: flex;
-    justify-content: space-around;
-    grid-gap: 8px;
-    gap: 8px;
-    background: transparent;
-    padding: 0;
+    justify-content: center;
+    grid-gap: 0;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 6px;
+    margin-top: 8px;
   }
 
   ha-card.modern .mode-item {
     flex: 1;
     flex-direction: row;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    color: rgba(255, 255, 255, 0.6);
-    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 10px 8px;
     font-weight: 500;
+    font-size: 13px;
     box-shadow: none;
     min-height: auto;
-    grid-gap: 8px;
-    gap: 8px;
+    grid-gap: 6px;
+    gap: 6px;
+    transition: all 0.25s ease;
   }
 
   ha-card.modern .mode-item .mode-icon {
-    --iron-icon-width: 20px;
-    --iron-icon-height: 20px;
+    --iron-icon-width: 18px;
+    --iron-icon-height: 18px;
   }
 
   ha-card.modern .mode-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   ha-card.modern .mode-item.active {
-    background: rgba(43, 154, 249, 0.2);
-    border: 1px solid rgba(43, 154, 249, 0.5);
+    background: rgba(43, 154, 249, 0.25);
+    border: none;
     color: #ffffff;
-    box-shadow: 0 0 20px rgba(43, 154, 249, 0.4),
-      inset 0 0 10px rgba(43, 154, 249, 0.2);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 20px rgba(43, 154, 249, 0.35),
+      0 0 8px rgba(43, 154, 249, 0.2);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
   }
   ha-card.modern .mode-item.active.heat {
-    background: rgba(255, 129, 0, 0.2);
-    border: 1px solid rgba(255, 129, 0, 0.5);
-    box-shadow: 0 0 20px rgba(255, 129, 0, 0.4),
-      inset 0 0 10px rgba(255, 129, 0, 0.2);
+    background: rgba(255, 129, 0, 0.25);
+    box-shadow: 0 0 20px rgba(255, 129, 0, 0.35), 0 0 8px rgba(255, 129, 0, 0.2);
   }
 
   /* 
- * Control Styles within Modern Theme
+ * Style: Classic - Large centered number with glowing arrows
  */
-  ha-card.modern .current-wrapper {
-    margin: 32px 0;
-  }
-
-  ha-card.modern .current--value {
-    color: #ffffff;
-    font-weight: 600;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  }
-
-  ha-card.modern .thermostat-trigger {
-    color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 8px;
-  }
-
-  ha-card.modern .thermostat-trigger:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Style: Classic Numbers with Arrows Stacked */
   ha-card.modern.style-classic .current-wrapper {
     flex-direction: column;
+    align-items: center;
   }
 
-  ha-card.modern.style-classic .current--value {
-    font-size: 56px;
-    line-height: 1;
-    margin: 16px 0;
-  }
-
-  /* Style: Dial Arc Layout */
+  /* 
+ * Style: Dial - Arc ring around temperature
+ */
   ha-card.modern.style-dial .current-wrapper {
     position: relative;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 8px solid rgba(255, 255, 255, 0.05);
-    border-top-color: rgba(43, 154, 249, 0.8); /* Simulated glowing arc */
-    border-right-color: rgba(43, 154, 249, 0.4);
-    box-shadow: 0 0 30px rgba(43, 154, 249, 0.2),
-      inset 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 220px;
+    height: 220px;
+    margin: 16px auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 24px auto;
+  }
+
+  /* The arc ring using conic-gradient */
+  ha-card.modern.style-dial .current-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    padding: 6px;
+    background: conic-gradient(
+      from 135deg,
+      rgba(80, 180, 255, 0.15) 0deg,
+      rgba(43, 154, 249, 0.6) 120deg,
+      rgba(43, 154, 249, 0.9) 200deg,
+      rgba(80, 180, 255, 0.15) 270deg,
+      transparent 270deg
+    );
+    -webkit-mask: linear-gradient(#fff 0, #fff 0) content-box,
+      linear-gradient(#fff 0, #fff 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    filter: drop-shadow(0 0 12px rgba(43, 154, 249, 0.4));
+    pointer-events: none;
+  }
+
+  /* Inner glow for the dial */
+  ha-card.modern.style-dial .current-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(43, 154, 249, 0.05) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
   }
 
   ha-card.modern.style-dial .current--value {
-    font-size: 48px;
+    font-size: 52px;
     margin: 0;
     z-index: 2;
   }
 
   ha-card.modern.style-dial .thermostat-trigger {
-    position: absolute;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    width: 100%;
-    height: 50%;
-    border-radius: 0;
-    margin: 0;
+    z-index: 3;
+    --mdc-icon-size: 36px;
   }
 
-  ha-card.modern.style-dial .thermostat-trigger:hover {
-    background: rgba(255, 255, 255, 0.05);
-  }
-
-  ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-up'] {
-    top: 0;
-    align-items: flex-start;
-    padding-top: 16px;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;
-  }
-
-  ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
-    bottom: 0;
-    align-items: flex-end;
-    padding-bottom: 16px;
-    border-bottom-left-radius: 100px;
-    border-bottom-right-radius: 100px;
+  ha-card.modern.style-dial .thermostat-trigger ha-icon {
+    --mdc-icon-size: 36px;
+    filter: drop-shadow(0 0 6px rgba(80, 180, 255, 0.4));
   }
 
   /* Editor Styles */

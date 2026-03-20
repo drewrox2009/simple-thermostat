@@ -281,198 +281,240 @@ ha-switch {
  */
 
 ha-card.modern {
-  background: var(--st-modern-bg, rgba(20, 20, 20, 0.4));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgba(30, 30, 40, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   color: #ffffff;
   padding: 24px;
+  overflow: visible;
+}
+
+ha-card.modern .header {
+  padding-bottom: 8px;
 }
 
 ha-card.modern .header__title,
 ha-card.modern .header__icon {
   color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   font-weight: 600;
 }
 
 ha-card.modern .body {
-  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0;
 }
 
+/* Sensors in modern theme */
 ha-card.modern .sensors {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 8px;
   grid-template-columns: unset;
+  width: 100%;
 }
 
-ha-card.modern .sensor-heading,
-ha-card.modern .sensor-value {
-  color: rgba(255, 255, 255, 0.7);
-  display: block;
-  font-size: 13px;
+ha-card.modern .sensor-heading {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 400;
   padding: 0;
   margin: 0;
-  justify-content: center;
 }
 ha-card.modern .sensor-value {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  margin: 2px 0 0 0;
+}
+
+/* 
+ * Temperature Controls - Classic Style (Large Glowing Arrows)
+ */
+ha-card.modern .current-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 16px 0;
+  gap: 0;
+}
+
+ha-card.modern .current--value {
   color: #ffffff;
-  font-weight: 500;
-  margin-top: 4px;
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  margin: 8px 0;
+  letter-spacing: -2px;
 }
 
-ha-card.modern .sensor-item {
-  /* Assuming we wrap infoItems in this if needed, else we target their layout */
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 8px 16px;
-  text-align: center;
+ha-card.modern .thermostat-trigger {
+  color: rgba(80, 180, 255, 0.8);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 4px;
+  transition: all 0.25s ease;
+  --mdc-icon-size: 48px;
 }
 
-/* Mode Buttons / Bottom Bar */
+ha-card.modern .thermostat-trigger ha-icon {
+  --mdc-icon-size: 48px;
+  filter: drop-shadow(0 0 8px rgba(80, 180, 255, 0.5));
+}
+
+ha-card.modern .thermostat-trigger:hover {
+  color: rgba(100, 200, 255, 1);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transform: scale(1.15);
+}
+
+ha-card.modern .thermostat-trigger:hover ha-icon {
+  filter: drop-shadow(0 0 16px rgba(80, 180, 255, 0.8));
+}
+
+/* Mode Buttons - Glass Pill Container */
 ha-card.modern .modes {
   display: flex;
-  justify-content: space-around;
-  gap: 8px;
-  background: transparent;
-  padding: 0;
+  justify-content: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 6px;
+  margin-top: 8px;
 }
 
 ha-card.modern .mode-item {
   flex: 1;
   flex-direction: row;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 12px 0;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 10px 8px;
   font-weight: 500;
+  font-size: 13px;
   box-shadow: none;
   min-height: auto;
-  gap: 8px;
+  gap: 6px;
+  transition: all 0.25s ease;
 }
 
 ha-card.modern .mode-item .mode-icon {
-  --iron-icon-width: 20px;
-  --iron-icon-height: 20px;
+  --iron-icon-width: 18px;
+  --iron-icon-height: 18px;
 }
 
 ha-card.modern .mode-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 ha-card.modern .mode-item.active {
-  background: rgba(43, 154, 249, 0.2);
-  border: 1px solid rgba(43, 154, 249, 0.5);
+  background: rgba(43, 154, 249, 0.25);
+  border: none;
   color: #ffffff;
-  box-shadow: 0 0 20px rgba(43, 154, 249, 0.4),
-    inset 0 0 10px rgba(43, 154, 249, 0.2);
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(43, 154, 249, 0.35), 0 0 8px rgba(43, 154, 249, 0.2);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
 }
 ha-card.modern .mode-item.active.heat {
-  background: rgba(255, 129, 0, 0.2);
-  border: 1px solid rgba(255, 129, 0, 0.5);
-  box-shadow: 0 0 20px rgba(255, 129, 0, 0.4),
-    inset 0 0 10px rgba(255, 129, 0, 0.2);
+  background: rgba(255, 129, 0, 0.25);
+  box-shadow: 0 0 20px rgba(255, 129, 0, 0.35), 0 0 8px rgba(255, 129, 0, 0.2);
 }
 
 /* 
- * Control Styles within Modern Theme
+ * Style: Classic - Large centered number with glowing arrows
  */
-ha-card.modern .current-wrapper {
-  margin: 32px 0;
-}
-
-ha-card.modern .current--value {
-  color: #ffffff;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-ha-card.modern .thermostat-trigger {
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 8px;
-}
-
-ha-card.modern .thermostat-trigger:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-/* Style: Classic Numbers with Arrows Stacked */
 ha-card.modern.style-classic .current-wrapper {
   flex-direction: column;
+  align-items: center;
 }
 
-ha-card.modern.style-classic .current--value {
-  font-size: 56px;
-  line-height: 1;
-  margin: 16px 0;
-}
-
-/* Style: Dial Arc Layout */
+/* 
+ * Style: Dial - Arc ring around temperature
+ */
 ha-card.modern.style-dial .current-wrapper {
   position: relative;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 8px solid rgba(255, 255, 255, 0.05);
-  border-top-color: rgba(43, 154, 249, 0.8); /* Simulated glowing arc */
-  border-right-color: rgba(43, 154, 249, 0.4);
-  box-shadow: 0 0 30px rgba(43, 154, 249, 0.2),
-    inset 0 0 20px rgba(0, 0, 0, 0.5);
+  width: 220px;
+  height: 220px;
+  margin: 16px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 24px auto;
+}
+
+/* The arc ring using conic-gradient */
+ha-card.modern.style-dial .current-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  padding: 6px;
+  background: conic-gradient(
+    from 135deg,
+    rgba(80, 180, 255, 0.15) 0deg,
+    rgba(43, 154, 249, 0.6) 120deg,
+    rgba(43, 154, 249, 0.9) 200deg,
+    rgba(80, 180, 255, 0.15) 270deg,
+    transparent 270deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: drop-shadow(0 0 12px rgba(43, 154, 249, 0.4));
+  pointer-events: none;
+}
+
+/* Inner glow for the dial */
+ha-card.modern.style-dial .current-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(43, 154, 249, 0.05) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 ha-card.modern.style-dial .current--value {
-  font-size: 48px;
+  font-size: 52px;
   margin: 0;
   z-index: 2;
 }
 
 ha-card.modern.style-dial .thermostat-trigger {
-  position: absolute;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  width: 100%;
-  height: 50%;
-  border-radius: 0;
-  margin: 0;
+  z-index: 3;
+  --mdc-icon-size: 36px;
 }
 
-ha-card.modern.style-dial .thermostat-trigger:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-up'] {
-  top: 0;
-  align-items: flex-start;
-  padding-top: 16px;
-  border-top-left-radius: 100px;
-  border-top-right-radius: 100px;
-}
-
-ha-card.modern.style-dial .thermostat-trigger[icon='hass:chevron-down'] {
-  bottom: 0;
-  align-items: flex-end;
-  padding-bottom: 16px;
-  border-bottom-left-radius: 100px;
-  border-bottom-right-radius: 100px;
+ha-card.modern.style-dial .thermostat-trigger ha-icon {
+  --mdc-icon-size: 36px;
+  filter: drop-shadow(0 0 6px rgba(80, 180, 255, 0.4));
 }
 
 /* Editor Styles */

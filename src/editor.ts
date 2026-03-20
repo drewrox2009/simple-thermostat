@@ -153,6 +153,20 @@ export default class SimpleThermostatEditor extends LitElement {
               @change=${this.toggleHeader}
             ></ha-switch>
           </ha-formfield>
+          <ha-formfield label="Show current temperature?">
+            <ha-switch
+              .checked=${(this.config as any)?.hide?.temperature !== true}
+              .configValue="${'hide.temperature'}"
+              @change=${this._invertedToggleChanged}
+            ></ha-switch>
+          </ha-formfield>
+          <ha-formfield label="Show state?">
+            <ha-switch
+              .checked=${(this.config as any)?.hide?.state !== true}
+              .configValue="${'hide.state'}"
+              @change=${this._invertedToggleChanged}
+            ></ha-switch>
+          </ha-formfield>
           <ha-formfield label="Show mode names?">
             <ha-switch
               .checked=${this.config?.layout?.mode?.names !== false}
@@ -394,5 +408,21 @@ export default class SimpleThermostatEditor extends LitElement {
   toggleHeader(ev) {
     this.config.header = ev.target.checked ? {} : false
     fireEvent(this, 'config-changed', { config: this.config })
+  }
+
+  /**
+   * Inverted toggle for "hide" config paths.
+   * Switch ON = don't hide (remove/set false), Switch OFF = hide (set true).
+   */
+  _invertedToggleChanged(ev) {
+    if (!this.config || !this.hass) return
+    const target = ev.currentTarget || ev.target
+    const copy = cloneDeep(this.config)
+    if (target.configValue) {
+      // Inverted: checked=true means DON'T hide, so set to false
+      // checked=false means DO hide, so set to true
+      setValue(copy, target.configValue, !target.checked)
+    }
+    fireEvent(this, 'config-changed', { config: copy })
   }
 }
