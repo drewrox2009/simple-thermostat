@@ -3703,18 +3703,30 @@ var css_248z = css`
   /* 
  * ==============================================================
  * ULTRA MODERN THEME (Glassmorphism + Glowing Interactions)
+ * Uses HA theme CSS variables for theme adherence.
+ * --primary-color: accent glow color
+ * --primary-text-color: main text
+ * --secondary-text-color: dimmed text
+ * --card-background-color: card bg base
  * ==============================================================
  */
 
   ha-card.modern {
     background: rgba(30, 30, 40, 0.55);
+    background: var(
+      --ha-card-background,
+      var(--card-background-color, rgba(30, 30, 40, 0.55))
+    );
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.15));
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    border-radius: var(--ha-card-border-radius, 20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--ha-card-box-shadow, 0 8px 32px rgba(0, 0, 0, 0.4));
+    color: #fff;
+    color: var(--primary-text-color, #fff);
     padding: 24px;
     overflow: visible;
   }
@@ -3725,8 +3737,8 @@ var css_248z = css`
 
   ha-card.modern .header__title,
   ha-card.modern .header__icon {
-    color: #ffffff;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    color: var(--primary-text-color, #fff);
     font-weight: 600;
   }
 
@@ -3751,13 +3763,15 @@ var css_248z = css`
 
   ha-card.modern .sensor-heading {
     color: rgba(255, 255, 255, 0.5);
+    color: var(--secondary-text-color, rgba(255, 255, 255, 0.5));
     font-size: 12px;
     font-weight: 400;
     padding: 0;
     margin: 0;
   }
   ha-card.modern .sensor-value {
-    color: rgba(255, 255, 255, 0.9);
+    color: #fff;
+    color: var(--primary-text-color, #fff);
     font-size: 14px;
     font-weight: 600;
     padding: 0;
@@ -3765,7 +3779,7 @@ var css_248z = css`
   }
 
   /* 
- * Temperature Controls - Classic Style (Large Glowing Arrows)
+ * Temperature Controls (Large Glowing Arrows)
  */
   ha-card.modern .current-wrapper {
     display: flex;
@@ -3778,17 +3792,18 @@ var css_248z = css`
   }
 
   ha-card.modern .current--value {
-    color: #ffffff;
+    color: #fff;
+    color: var(--primary-text-color, #fff);
     font-size: 64px;
     font-weight: 300;
     line-height: 1;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
     margin: 8px 0;
     letter-spacing: -2px;
   }
 
   ha-card.modern .thermostat-trigger {
     color: rgba(80, 180, 255, 0.8);
+    color: var(--primary-color, rgba(80, 180, 255, 0.8));
     background: transparent;
     border: none;
     box-shadow: none;
@@ -3801,10 +3816,12 @@ var css_248z = css`
   ha-card.modern .thermostat-trigger ha-icon {
     --mdc-icon-size: 48px;
     filter: drop-shadow(0 0 8px rgba(80, 180, 255, 0.5));
+    filter: drop-shadow(0 0 8px var(--primary-color, rgba(80, 180, 255, 0.5)));
   }
 
   ha-card.modern .thermostat-trigger:hover {
     color: rgba(100, 200, 255, 1);
+    color: var(--primary-color, rgba(100, 200, 255, 1));
     background: transparent;
     border: none;
     box-shadow: none;
@@ -3813,6 +3830,7 @@ var css_248z = css`
 
   ha-card.modern .thermostat-trigger:hover ha-icon {
     filter: drop-shadow(0 0 16px rgba(80, 180, 255, 0.8));
+    filter: drop-shadow(0 0 16px var(--primary-color, rgba(80, 180, 255, 0.8)));
   }
 
   /* Mode Buttons - Glass Pill Container */
@@ -3822,7 +3840,9 @@ var css_248z = css`
     grid-gap: 0;
     gap: 0;
     background: rgba(255, 255, 255, 0.06);
+    background: var(--secondary-background-color, rgba(255, 255, 255, 0.06));
     border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.1));
     border-radius: 18px;
     padding: 6px;
     margin-top: 8px;
@@ -3835,6 +3855,7 @@ var css_248z = css`
     border: none;
     border-radius: 14px;
     color: rgba(255, 255, 255, 0.5);
+    color: var(--secondary-text-color, rgba(255, 255, 255, 0.5));
     padding: 10px 8px;
     font-weight: 500;
     font-size: 13px;
@@ -3852,16 +3873,21 @@ var css_248z = css`
 
   ha-card.modern .mode-item:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.8);
+    background: var(--state-icon-hover-color, rgba(255, 255, 255, 0.08));
+    color: #fff;
+    color: var(--primary-text-color, #fff);
   }
 
   ha-card.modern .mode-item.active {
     background: rgba(43, 154, 249, 0.25);
+    background: var(--state-active-color, rgba(43, 154, 249, 0.25));
     border: none;
-    color: #ffffff;
+    color: #fff;
+    color: var(--primary-text-color, #fff);
     box-shadow: 0 0 20px rgba(43, 154, 249, 0.35),
       0 0 8px rgba(43, 154, 249, 0.2);
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(var(--rgb-primary-color, 43, 154, 249), 0.35),
+      0 0 8px rgba(var(--rgb-primary-color, 43, 154, 249), 0.2);
   }
   ha-card.modern .mode-item.active.heat {
     background: rgba(255, 129, 0, 0.25);
@@ -3902,10 +3928,18 @@ var css_248z = css`
     padding: 6px;
     background: conic-gradient(
       from 135deg,
-      rgba(80, 180, 255, 0.15) 0deg,
+      rgba(43, 154, 249, 0.15) 0deg,
       rgba(43, 154, 249, 0.6) 120deg,
       rgba(43, 154, 249, 0.9) 200deg,
-      rgba(80, 180, 255, 0.15) 270deg,
+      rgba(43, 154, 249, 0.15) 270deg,
+      transparent 270deg
+    );
+    background: conic-gradient(
+      from 135deg,
+      rgba(var(--rgb-primary-color, 43, 154, 249), 0.15) 0deg,
+      rgba(var(--rgb-primary-color, 43, 154, 249), 0.6) 120deg,
+      rgba(var(--rgb-primary-color, 43, 154, 249), 0.9) 200deg,
+      rgba(var(--rgb-primary-color, 43, 154, 249), 0.15) 270deg,
       transparent 270deg
     );
     -webkit-mask: linear-gradient(#fff 0, #fff 0) content-box,
@@ -3915,6 +3949,9 @@ var css_248z = css`
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     filter: drop-shadow(0 0 12px rgba(43, 154, 249, 0.4));
+    filter: drop-shadow(
+      0 0 12px rgba(var(--rgb-primary-color, 43, 154, 249), 0.4)
+    );
     pointer-events: none;
   }
 
@@ -3930,6 +3967,11 @@ var css_248z = css`
     background: radial-gradient(
       circle,
       rgba(43, 154, 249, 0.05) 0%,
+      transparent 70%
+    );
+    background: radial-gradient(
+      circle,
+      rgba(var(--rgb-primary-color, 43, 154, 249), 0.05) 0%,
       transparent 70%
     );
     pointer-events: none;
@@ -3948,7 +3990,10 @@ var css_248z = css`
 
   ha-card.modern.style-dial .thermostat-trigger ha-icon {
     --mdc-icon-size: 36px;
-    filter: drop-shadow(0 0 6px rgba(80, 180, 255, 0.4));
+    filter: drop-shadow(0 0 6px rgba(43, 154, 249, 0.4));
+    filter: drop-shadow(
+      0 0 6px rgba(var(--rgb-primary-color, 43, 154, 249), 0.4)
+    );
   }
 
   /* Editor Styles */

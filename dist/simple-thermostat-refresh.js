@@ -210,7 +210,7 @@ const b =
     window.trustedTypes &&
     trustedTypes.createPolicy('lit-html', { createHTML: (e) => e }),
   _ = ` ${n} `
-class w {
+class x {
   constructor(e, t, i, n) {
     ;(this.strings = e),
       (this.values = t),
@@ -239,7 +239,7 @@ class w {
     return void 0 !== b && (t = b.createHTML(t)), (e.innerHTML = t), e
   }
 }
-const x = (e) =>
+const w = (e) =>
     null === e || !('object' == typeof e || 'function' == typeof e),
   S = (e) => Array.isArray(e) || !(!e || !e[Symbol.iterator])
 class $ {
@@ -269,7 +269,7 @@ class $ {
       const t = i[r]
       if (void 0 !== t) {
         const e = t.value
-        if (x(e) || !S(e)) n += 'string' == typeof e ? e : String(e)
+        if (w(e) || !S(e)) n += 'string' == typeof e ? e : String(e)
         else for (const t of e) n += 'string' == typeof t ? t : String(t)
       }
     }
@@ -287,7 +287,7 @@ class k {
   }
   setValue(e) {
     e === m ||
-      (x(e) && e === this.value) ||
+      (w(e) && e === this.value) ||
       ((this.value = e), g(e) || (this.committer.dirty = !0))
   }
   commit() {
@@ -327,9 +327,9 @@ class C {
     }
     const e = this.__pendingValue
     e !== m &&
-      (x(e)
+      (w(e)
         ? e !== this.value && this.__commitText(e)
-        : e instanceof w
+        : e instanceof x
         ? this.__commitTemplateResult(e)
         : e instanceof Node
         ? this.__commitNode(e)
@@ -525,18 +525,18 @@ const R = new (class {
 })()
 'undefined' != typeof window &&
   (window.litHtmlVersions || (window.litHtmlVersions = [])).push('1.3.0')
-const I = (e, ...t) => new w(e, t, 'html', R),
-  F = (e, t) => `${e}--${t}`
-let U = !0
+const I = (e, ...t) => new x(e, t, 'html', R),
+  U = (e, t) => `${e}--${t}`
+let F = !0
 void 0 === window.ShadyCSS
-  ? (U = !1)
+  ? (F = !1)
   : void 0 === window.ShadyCSS.prepareTemplateDom &&
     (console.warn(
       'Incompatible ShadyCSS version detected. Please update to at least @webcomponents/webcomponentsjs@2.0.2 and @webcomponents/shadycss@1.3.1.'
     ),
-    (U = !1))
+    (F = !1))
 const M = (e) => (t) => {
-    const i = F(t.type, e)
+    const i = U(t.type, e)
     let r = A.get(i)
     void 0 === r &&
       ((r = { stringsArray: new WeakMap(), keyString: new Map() }), A.set(i, r))
@@ -545,7 +545,7 @@ const M = (e) => (t) => {
     const s = t.strings.join(n)
     if (((o = r.keyString.get(s)), void 0 === o)) {
       const i = t.getTemplateElement()
-      U && window.ShadyCSS.prepareTemplateDom(i, e),
+      F && window.ShadyCSS.prepareTemplateDom(i, e),
         (o = new a(t, i)),
         r.keyString.set(s, o)
     }
@@ -566,7 +566,7 @@ const M = (e) => (t) => {
     }
     ;((e) => {
       H.forEach((t) => {
-        const i = A.get(F(t, e))
+        const i = A.get(U(t, e))
         void 0 !== i &&
           i.keyString.forEach((e) => {
             const {
@@ -1048,7 +1048,7 @@ function ne(e, t, i) {
       throw new Error('The `scopeName` option is required.')
     const r = n.scopeName,
       o = V.has(t),
-      a = U && 11 === t.nodeType && !!t.host,
+      a = F && 11 === t.nodeType && !!t.host,
       s = a && !L.has(r),
       l = s ? document.createDocumentFragment() : t
     if (
@@ -1185,7 +1185,7 @@ const _e = (e, t = {}) => {
     c
   )
 }
-var we = Z`:host {
+var xe = Z`:host {
   --st-default-spacing: 4px;
 }
 ha-card {
@@ -1508,19 +1508,27 @@ ha-switch {
 /* 
  * ==============================================================
  * ULTRA MODERN THEME (Glassmorphism + Glowing Interactions)
+ * Uses HA theme CSS variables for theme adherence.
+ * --primary-color: accent glow color
+ * --primary-text-color: main text
+ * --secondary-text-color: dimmed text
+ * --card-background-color: card bg base
  * ==============================================================
  */
 
 ha-card.modern {
   background: rgba(30, 30, 40, 0.55);
+  background: var(--ha-card-background, var(--card-background-color, rgba(30, 30, 40, 0.55)));
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.15));
   border-radius: 20px;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  border-radius: var(--ha-card-border-radius, 20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--ha-card-box-shadow, 0 8px 32px rgba(0, 0, 0, 0.4));
+  color: #fff;
+  color: var(--primary-text-color, #fff);
   padding: 24px;
   overflow: visible;
 }
@@ -1531,8 +1539,8 @@ ha-card.modern .header {
 
 ha-card.modern .header__title,
 ha-card.modern .header__icon {
-  color: #ffffff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  color: var(--primary-text-color, #fff);
   font-weight: 600;
 }
 
@@ -1557,13 +1565,15 @@ ha-card.modern .sensors {
 
 ha-card.modern .sensor-heading {
   color: rgba(255, 255, 255, 0.5);
+  color: var(--secondary-text-color, rgba(255, 255, 255, 0.5));
   font-size: 12px;
   font-weight: 400;
   padding: 0;
   margin: 0;
 }
 ha-card.modern .sensor-value {
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  color: var(--primary-text-color, #fff);
   font-size: 14px;
   font-weight: 600;
   padding: 0;
@@ -1571,7 +1581,7 @@ ha-card.modern .sensor-value {
 }
 
 /* 
- * Temperature Controls - Classic Style (Large Glowing Arrows)
+ * Temperature Controls (Large Glowing Arrows)
  */
 ha-card.modern .current-wrapper {
   display: flex;
@@ -1584,17 +1594,18 @@ ha-card.modern .current-wrapper {
 }
 
 ha-card.modern .current--value {
-  color: #ffffff;
+  color: #fff;
+  color: var(--primary-text-color, #fff);
   font-size: 64px;
   font-weight: 300;
   line-height: 1;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
   margin: 8px 0;
   letter-spacing: -2px;
 }
 
 ha-card.modern .thermostat-trigger {
   color: rgba(80, 180, 255, 0.8);
+  color: var(--primary-color, rgba(80, 180, 255, 0.8));
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1607,10 +1618,12 @@ ha-card.modern .thermostat-trigger {
 ha-card.modern .thermostat-trigger ha-icon {
   --mdc-icon-size: 48px;
   filter: drop-shadow(0 0 8px rgba(80, 180, 255, 0.5));
+  filter: drop-shadow(0 0 8px var(--primary-color, rgba(80, 180, 255, 0.5)));
 }
 
 ha-card.modern .thermostat-trigger:hover {
   color: rgba(100, 200, 255, 1);
+  color: var(--primary-color, rgba(100, 200, 255, 1));
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1619,6 +1632,7 @@ ha-card.modern .thermostat-trigger:hover {
 
 ha-card.modern .thermostat-trigger:hover ha-icon {
   filter: drop-shadow(0 0 16px rgba(80, 180, 255, 0.8));
+  filter: drop-shadow(0 0 16px var(--primary-color, rgba(80, 180, 255, 0.8)));
 }
 
 /* Mode Buttons - Glass Pill Container */
@@ -1628,7 +1642,9 @@ ha-card.modern .modes {
   grid-gap: 0;
   gap: 0;
   background: rgba(255, 255, 255, 0.06);
+  background: var(--secondary-background-color, rgba(255, 255, 255, 0.06));
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--divider-color, rgba(255, 255, 255, 0.1));
   border-radius: 18px;
   padding: 6px;
   margin-top: 8px;
@@ -1641,6 +1657,7 @@ ha-card.modern .mode-item {
   border: none;
   border-radius: 14px;
   color: rgba(255, 255, 255, 0.5);
+  color: var(--secondary-text-color, rgba(255, 255, 255, 0.5));
   padding: 10px 8px;
   font-weight: 500;
   font-size: 13px;
@@ -1658,23 +1675,23 @@ ha-card.modern .mode-item .mode-icon {
 
 ha-card.modern .mode-item:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
+  background: var(--state-icon-hover-color, rgba(255, 255, 255, 0.08));
+  color: #fff;
+  color: var(--primary-text-color, #fff);
 }
 
 ha-card.modern .mode-item.active {
   background: rgba(43, 154, 249, 0.25);
+  background: var(--state-active-color, rgba(43, 154, 249, 0.25));
   border: none;
-  color: #ffffff;
-  box-shadow:
-    0 0 20px rgba(43, 154, 249, 0.35),
-    0 0 8px rgba(43, 154, 249, 0.2);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  color: #fff;
+  color: var(--primary-text-color, #fff);
+  box-shadow: 0 0 20px rgba(43, 154, 249, 0.35), 0 0 8px rgba(43, 154, 249, 0.2);
+  box-shadow: 0 0 20px rgba(var(--rgb-primary-color, 43, 154, 249), 0.35), 0 0 8px rgba(var(--rgb-primary-color, 43, 154, 249), 0.2);
 }
 ha-card.modern .mode-item.active.heat {
   background: rgba(255, 129, 0, 0.25);
-  box-shadow:
-    0 0 20px rgba(255, 129, 0, 0.35),
-    0 0 8px rgba(255, 129, 0, 0.2);
+  box-shadow: 0 0 20px rgba(255, 129, 0, 0.35), 0 0 8px rgba(255, 129, 0, 0.2);
 }
 
 /* 
@@ -1711,21 +1728,26 @@ ha-card.modern.style-dial .current-wrapper::before {
   padding: 6px;
   background: conic-gradient(
     from 135deg,
-    rgba(80, 180, 255, 0.15) 0deg,
+    rgba(43, 154, 249, 0.15) 0deg,
     rgba(43, 154, 249, 0.6) 120deg,
     rgba(43, 154, 249, 0.9) 200deg,
-    rgba(80, 180, 255, 0.15) 270deg,
+    rgba(43, 154, 249, 0.15) 270deg,
     transparent 270deg
   );
-  -webkit-mask:
-    linear-gradient(#fff 0, #fff 0) content-box,
-    linear-gradient(#fff 0, #fff 0);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+  background: conic-gradient(
+    from 135deg,
+    rgba(var(--rgb-primary-color, 43, 154, 249), 0.15) 0deg,
+    rgba(var(--rgb-primary-color, 43, 154, 249), 0.6) 120deg,
+    rgba(var(--rgb-primary-color, 43, 154, 249), 0.9) 200deg,
+    rgba(var(--rgb-primary-color, 43, 154, 249), 0.15) 270deg,
+    transparent 270deg
+  );
+  -webkit-mask: linear-gradient(#fff 0, #fff 0) content-box, linear-gradient(#fff 0, #fff 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   filter: drop-shadow(0 0 12px rgba(43, 154, 249, 0.4));
+  filter: drop-shadow(0 0 12px rgba(var(--rgb-primary-color, 43, 154, 249), 0.4));
   pointer-events: none;
 }
 
@@ -1741,6 +1763,11 @@ ha-card.modern.style-dial .current-wrapper::after {
   background: radial-gradient(
     circle,
     rgba(43, 154, 249, 0.05) 0%,
+    transparent 70%
+  );
+  background: radial-gradient(
+    circle,
+    rgba(var(--rgb-primary-color, 43, 154, 249), 0.05) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -1759,9 +1786,9 @@ ha-card.modern.style-dial .thermostat-trigger {
 
 ha-card.modern.style-dial .thermostat-trigger ha-icon {
   --mdc-icon-size: 36px;
-  filter: drop-shadow(0 0 6px rgba(80, 180, 255, 0.4));
+  filter: drop-shadow(0 0 6px rgba(43, 154, 249, 0.4));
+  filter: drop-shadow(0 0 6px rgba(var(--rgb-primary-color, 43, 154, 249), 0.4));
 }
-
 
 /* Editor Styles */
 .card-config {
@@ -1788,7 +1815,7 @@ ha-card.modern.style-dial .thermostat-trigger ha-icon {
   margin-bottom: 8px;
 }
 `
-function xe(e, { decimals: t = 1, fallback: i = 'N/A' } = {}) {
+function we(e, { decimals: t = 1, fallback: i = 'N/A' } = {}) {
   return null === e || '' === e || ['boolean', 'undefined'].includes(typeof e)
     ? i
     : Number(e).toFixed(t)
@@ -1845,7 +1872,7 @@ function Se({
         ? (r.styleSheet.cssText = e)
         : r.appendChild(document.createTextNode(e))
   }
-})(we)
+})(xe)
 'undefined' != typeof globalThis
   ? globalThis
   : 'undefined' != typeof window
@@ -1975,8 +2002,8 @@ var $e,
               var y = o[1],
                 b = o[2],
                 _ = o[3],
-                w = o[4],
-                x = o[5],
+                x = o[4],
+                w = o[5],
                 S = o.index
               if (y)
                 '(' === y
@@ -2016,8 +2043,8 @@ var $e,
                   v(S),
                   (p = S + o[0].length),
                   (h.lastIndex = p),
-                  (f = x),
-                  w && 'h' === r && (r = 's'),
+                  (f = w),
+                  x && 'h' === r && (r = 's'),
                   (u.t = r),
                   u
                 )
@@ -2065,36 +2092,36 @@ var $e,
                 y = c[1],
                 b = c[2],
                 _ = c[3] || ''
-              for (var w in r)
-                if (r[w] === _) {
-                  v = w
+              for (var x in r)
+                if (r[x] === _) {
+                  v = x
                   break
                 }
               m(y, b),
                 (p = c.index + c[0].length),
                 v || i('unrecognized tag type: ' + _, e, p)
-              var x = g(c.index, v),
-                S = x.t
+              var w = g(c.index, v),
+                S = w.t
               if ('h' === S) {
-                var $ = x.n || ''
-                n.async && s.test($) && ((x.a = !0), (x.n = $.replace(s, ''))),
-                  (x = o(x)),
-                  u.push(x)
+                var $ = w.n || ''
+                n.async && s.test($) && ((w.a = !0), (w.n = $.replace(s, ''))),
+                  (w = o(w)),
+                  u.push(w)
               } else if ('c' === S) {
-                if (a.n === x.n)
+                if (a.n === w.n)
                   return d ? ((d.d = u), a.b.push(d)) : (a.d = u), a
                 i("Helper start and end don't match", e, c.index + c[0].length)
               } else if ('b' === S) {
                 d ? ((d.d = u), a.b.push(d)) : (a.d = u)
-                var k = x.n || ''
-                n.async && s.test(k) && ((x.a = !0), (x.n = k.replace(s, ''))),
-                  (d = x),
+                var k = w.n || ''
+                n.async && s.test(k) && ((w.a = !0), (w.n = k.replace(s, ''))),
+                  (d = w),
                   (u = [])
               } else if ('s' === S) {
-                var C = x.n || ''
-                n.async && s.test(C) && ((x.a = !0), (x.n = C.replace(s, ''))),
-                  u.push(x)
-              } else u.push(x)
+                var C = w.n || ''
+                n.async && s.test(C) && ((w.a = !0), (w.n = C.replace(s, ''))),
+                  u.push(w)
+              } else u.push(w)
             }
             if (!l) throw t('unclosed helper "' + a.n + '"')
             return m(e.slice(p, e.length), !1), (a.d = u), a
@@ -2223,7 +2250,7 @@ var $e,
             e
           )
         })()
-        function w(e, i, n, r) {
+        function x(e, i, n, r) {
           if (i && i.length > 0)
             throw t(
               (r ? 'Native' : '') + "Helper '" + e + "' doesn't accept blocks"
@@ -2233,7 +2260,7 @@ var $e,
               (r ? 'Native' : '') + "Helper '" + e + "' doesn't accept filters"
             )
         }
-        var x = {
+        var w = {
           '&': '&amp;',
           '<': '&lt;',
           '>': '&gt;',
@@ -2241,14 +2268,14 @@ var $e,
           "'": '&#39;',
         }
         function S(e) {
-          return x[e]
+          return w[e]
         }
         var $ = new _({}),
           k = new _({
             each: function (e, t) {
               var i = '',
                 n = e.params[0]
-              if ((w('each', t, !1), e.async))
+              if ((x('each', t, !1), e.async))
                 return new Promise(function (t) {
                   !(function e(t, i, n, r, o) {
                     n(t[i], i).then(function (a) {
@@ -2262,7 +2289,7 @@ var $e,
             },
             foreach: function (e, t) {
               var i = e.params[0]
-              if ((w('foreach', t, !1), e.async))
+              if ((x('foreach', t, !1), e.async))
                 return new Promise(function (t) {
                   !(function e(t, i, n, r, o, a) {
                     r(i[n], t[i[n]]).then(function (s) {
@@ -2276,7 +2303,7 @@ var $e,
               return n
             },
             include: function (e, i, n) {
-              w('include', i, !1)
+              x('include', i, !1)
               var r = n.storage.templates.get(e.params[0])
               if (!r) throw t('Could not fetch template "' + e.params[0] + '"')
               return r(e.params[1], n)
@@ -2293,12 +2320,12 @@ var $e,
               return s(r, n)
             },
             useScope: function (e, t) {
-              return w('useScope', t, !1), e.exec(e.params[0])
+              return x('useScope', t, !1), e.exec(e.params[0])
             },
           }),
           C = new _({
             if: function (e, t) {
-              w('if', !1, e.f, !0)
+              x('if', !1, e.f, !0)
               var i = 'if(' + e.p + '){' + b(e.d, t) + '}'
               if (e.b)
                 for (var n = 0; n < e.b.length; n++) {
@@ -2312,7 +2339,7 @@ var $e,
             },
             try: function (e, i) {
               if (
-                (w('try', !1, e.f, !0),
+                (x('try', !1, e.f, !0),
                 !e.b || 1 !== e.b.length || 'catch' !== e.b[0].n)
               )
                 throw t("native helper 'try' only accepts 1 block, 'catch'")
@@ -2329,7 +2356,7 @@ var $e,
             },
             block: function (e, t) {
               return (
-                w('block', e.b, e.f, !0),
+                x('block', e.b, e.f, !0),
                 'if(!' +
                   t.varName +
                   '[' +
@@ -2453,7 +2480,7 @@ const Ce = new WeakMap(),
       if (!(t instanceof C))
         throw new Error('unsafeHTML can only be used in text bindings')
       const i = Ce.get(t)
-      if (void 0 !== i && x(e) && e === i.value && t.value === i.fragment)
+      if (void 0 !== i && w(e) && e === i.value && t.value === i.fragment)
         return
       const n = document.createElement('template')
       n.innerHTML = e
@@ -2514,11 +2541,11 @@ function Ne({
         '',
       ].join('.')
     let n = r(i.state, t)
-    'number' == typeof u && (n = xe(n, { decimals: u })),
+    'number' == typeof u && (n = we(n, { decimals: u })),
       (p = I`<div class="sensor-value clickable" @click="${() =>
         o(i.entity_id)}">${n} ${h || i.attributes.unit_of_measurement}</div>`)
   } else {
-    let e = 'number' == typeof u ? xe(i, { decimals: u }) : i
+    let e = 'number' == typeof u ? we(i, { decimals: u }) : i
     p = I`<div class="sensor-value">${e}${h}</div>`
   }
   if (!1 === c) return p
@@ -2621,15 +2648,15 @@ function Ie(e, t) {
       })
     : []
 }
-var Fe
+var Ue
 !(function (e) {
   ;(e.HVAC = 'hvac'),
     (e.FAN = 'fan'),
     (e.PRESET = 'preset'),
     (e.SWING = 'swing')
-})(Fe || (Fe = {}))
-const Ue = Object.values(Fe),
-  Me = [Fe.HVAC, Fe.PRESET],
+})(Ue || (Ue = {}))
+const Fe = Object.values(Ue),
+  Me = [Ue.HVAC, Ue.PRESET],
   He = 'hass:chevron-up',
   Le = 'hass:chevron-down',
   qe = 'mdi:plus',
@@ -2725,7 +2752,7 @@ class Je extends te {
       })
   }
   static get styles() {
-    return we
+    return xe
   }
   static getConfigElement() {
     return window.document.createElement(`${e}-editor`)
@@ -2816,7 +2843,7 @@ class Je extends te {
     })(s, this._values)
       ? (this._updatingValues = !1)
       : this._updatingValues || (this._values = s)
-    const l = (e) => Ue.includes(e) && a[`${e}_modes`],
+    const l = (e) => Fe.includes(e) && a[`${e}_modes`],
       c = (e) =>
         e.filter(l).map((e) => ({ type: e, hide_when_off: !1, list: Be(e, a) }))
     let d = []
@@ -2837,7 +2864,7 @@ class Je extends te {
     } else d = c(Me)
     if (
       ((this.modes = d.map((e) => {
-        if (e.type === Fe.HVAC) {
+        if (e.type === Ue.HVAC) {
           const t = [],
             i = Object.values(je)
           return (
@@ -3009,7 +3036,7 @@ class Je extends te {
                   })
                 ke.filters.define(
                   'formatNumber',
-                  (e, t = { decimals: a.decimals }) => String(xe(e, t))
+                  (e, t = { decimals: a.decimals }) => String(we(e, t))
                 ),
                   ke.filters.define(
                     'relativetime',
@@ -3040,9 +3067,9 @@ class Je extends te {
                 )
                   return I`<div class="sensor-value">${Oe(b)}</div>`
                 const _ = n || '{{friendly_name}}',
-                  w = _.match(/^(mdi|hass):.*/) ? Ee(_) : y(_)
+                  x = _.match(/^(mdi|hass):.*/) ? Ee(_) : y(_)
                 return I`<div class="sensor-heading">${Oe(
-                  w
+                  x
                 )}</div><div class="sensor-value">${Oe(b)}</div>`
               })(
                 Object.assign(Object.assign({}, e), {
@@ -3096,7 +3123,7 @@ class Je extends te {
                     [
                       Ne({
                         hide: e.temperature,
-                        state: `${xe(v, o)}${i || ''}`,
+                        state: `${we(v, o)}${i || ''}`,
                         hass: n,
                         details: {
                           heading:
@@ -3173,7 +3200,7 @@ class Je extends te {
         }"></ha-icon></ha-icon-button><h3 @click="${() =>
           this.openEntityPopover()}" class="current--value ${
           i ? 'updating' : v
-        }">${xe(t, n)} ${
+        }">${we(t, n)} ${
           o ? I`<span class="current--unit">${u}</span>` : v
         }</h3><ha-icon-button ?disabled="${
           null !== c && t <= c
@@ -3210,7 +3237,7 @@ class Je extends te {
       n = Number(i) + e,
       { decimals: r } = this.config
     ;(this._values = Object.assign(Object.assign({}, this._values), {
-      [t]: +xe(n, { decimals: r }),
+      [t]: +we(n, { decimals: r }),
     })),
       this._debouncedSetTemperature(this._values)
   }
@@ -3356,8 +3383,8 @@ pe([Y()], Je.prototype, 'config', void 0),
           y,
           b,
           _,
-          w,
           x,
+          w,
           S,
           $
         return this.hass
@@ -3496,16 +3523,16 @@ pe([Y()], Je.prototype, 'config', void 0),
                     this.hass
                   }" .value="${
                     null ===
-                      (w =
+                      (x =
                         null ===
                           (_ =
                             null === (b = this.config) || void 0 === b
                               ? void 0
                               : b.header) || void 0 === _
                           ? void 0
-                          : _.toggle) || void 0 === w
+                          : _.toggle) || void 0 === x
                       ? void 0
-                      : w.entity
+                      : x.entity
                   }" .configValue="${'header.toggle.entity'}" @change="${
                     this.valueChanged
                   }" allow-custom-entity></ha-entity-picker><ha-textfield label="Toggle entity label" .value="${
@@ -3513,9 +3540,9 @@ pe([Y()], Je.prototype, 'config', void 0),
                       ($ =
                         null ===
                           (S =
-                            null === (x = this.config) || void 0 === x
+                            null === (w = this.config) || void 0 === w
                               ? void 0
-                              : x.header) || void 0 === S
+                              : w.header) || void 0 === S
                           ? void 0
                           : S.toggle) || void 0 === $
                       ? void 0
